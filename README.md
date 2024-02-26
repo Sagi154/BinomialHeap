@@ -1,0 +1,1 @@
+This project is the second project in Data Structures course in TAU.
