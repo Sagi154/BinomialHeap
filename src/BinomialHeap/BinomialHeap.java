@@ -21,6 +21,20 @@ public class BinomialHeap{
 
 	public HeapNode getLast() { return last; }
 
+	public HeapNode getMin(){ return this.min; }
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public void setLast(HeapNode last) {
+		this.last = last;
+	}
+
+	public void setMin(HeapNode newMin) {
+		this.min = newMin;
+	}
+
 	public HeapItem makeNewItem(int key, String info){
 		HeapItem item = new HeapItem(key, info);
 		HeapNode node = new HeapNode(item);
@@ -62,16 +76,44 @@ public class BinomialHeap{
 	 */
 	public HeapItem findMin() { return this.min.getItem(); }
 
+	public void siftUp(HeapItem item){
+		HeapNode currNode = item.getNode();
+		HeapNode parent = currNode.getParent();
+		HeapItem parentItem;
+		while (parent != null){
+			parentItem = parent.getItem();
+			if (item.getKey() >= parentItem.getKey()){
+				break;
+			}
+			// If reached here, we need to switch the items.
+			currNode.setItem(parentItem);
+			parentItem.setNode(currNode);
+			parent.setItem(item);
+			item.setNode(parent);
+			// Made switch, now we need to advance parent
+			currNode = parent;
+			parent = currNode.getParent();
+		}
+	}
+
 	/**
-	 * 
+	 *
 	 * pre: 0 < diff < item.key
-	 * 
-	 * Decrease the key of item by diff and fix the heap. 
-	 * 
+	 *
+	 * Decrease the key of item by diff and fix the heap.
+	 *
 	 */
-	public void decreaseKey(HeapItem item, int diff) 
-	{    
-		return; // should be replaced by student code
+
+	public void decreaseKey(HeapItem item, int diff)
+	{
+		// First, we update the key of item to the new key.
+		item.setKey(item.getKey() - diff);
+		// Second, we fix the tree by sifting up if needed.
+		this.siftUp(item);
+		// Last, we update the min if needed.
+		if (item.getKey() < this.getMin().getItem().getKey()){
+			this.setMin(item.getNode());
+		}
 	}
 
 	/**
@@ -80,8 +122,12 @@ public class BinomialHeap{
 	 *
 	 */
 	public void delete(HeapItem item) 
-	{    
-		return; // should be replaced by student code
+	{
+		// First, we decrease the key, so it becomes the minimum.
+		int diff = item.getKey() - this.getMin().getItem().getKey() + 1;
+		this.decreaseKey(item, diff);
+		// Then, we use deleteMin.
+		this.deleteMin();
 	}
 
 	/**
@@ -107,10 +153,7 @@ public class BinomialHeap{
 	 * is empty.
 	 *   
 	 */
-	public boolean empty()
-	{
-
-		return this.size() == 0;	}
+	public boolean empty() { return this.size() == 0;}
 
 	/**
 	 * 
@@ -156,9 +199,9 @@ public class BinomialHeap{
 
 		public HeapNode(HeapItem item, HeapNode child, HeapNode next, HeapNode parent){
 			this.item = item;
-			// this.child = child;
+			 this.child = child;
 			this.next = next;
-			// this.parent = parent;
+			 this.parent = parent;
 		}
 
 		public HeapItem getItem(){ return item; }
@@ -212,6 +255,10 @@ public class BinomialHeap{
 		public int getKey() { return key; }
 
 		public String getInfo() { return info; }
+
+		public void setKey(int key){
+			this.key = key;
+		}
 
 		public void setNode(HeapNode node) { this.node = node; }
 	}
