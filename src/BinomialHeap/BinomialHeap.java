@@ -173,6 +173,20 @@ public class BinomialHeap{
 		return count;
 	}
 
+	public void find_new_min (BinomialHeap binomial_Heap){
+		HeapNode last = binomial_Heap.getLast();
+		HeapNode pointer = last;
+		HeapNode new_min = last;
+		while (pointer.getNext() != last ){
+			if (pointer.getItem().getKey() < new_min.getItem().getKey()){
+				new_min = pointer;
+			}
+			pointer.getNext();
+		}
+		binomial_Heap.setMin(new_min);
+	}
+
+
 	/**
 	 * Class implementing a node in a Binomial Heap.
 	 *  
