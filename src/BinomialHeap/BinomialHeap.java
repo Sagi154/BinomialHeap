@@ -38,7 +38,7 @@ public class BinomialHeap{
 	public HeapItem makeNewItem(int key, String info){
 		HeapItem item = new HeapItem(key, info);
 		HeapNode node = new HeapNode(item);
-		node.setItem(item);
+//		node.setItem(item);
 		item.setNode(node);
 		return item;
 	}
@@ -190,6 +190,7 @@ public class BinomialHeap{
 
 		public HeapNode(HeapItem item){
 			this.item = item;
+			this.next = this;
 		}
 
 		public HeapNode(HeapItem item, HeapNode next){
