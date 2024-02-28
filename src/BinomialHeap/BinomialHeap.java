@@ -14,6 +14,11 @@ public class BinomialHeap{
 
 	public BinomialHeap() {	}
 
+	public BinomialHeap(int size, HeapNode last) {
+		this.size = size;
+		this.last = last;
+	}
+
 	public BinomialHeap(HeapNode last, HeapNode min) {
 		this.last = last;
 		this.min = min;
@@ -56,6 +61,15 @@ public class BinomialHeap{
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
 		this.meld(heap2);
 		return item;
+	}
+
+	public BinomialHeap createHeapOfMinChildren (HeapNode deletedMin){
+		int rank = deletedMin.getRank();
+		int size = (Math.pow(2, rank)).intValue();
+		HeapNode last = deletedMin.getChild();
+		BinomialHeap newHeap = new BinomialHeap(size, last);
+		newHeap.findNewMin();
+		return newHeap;
 	}
 
 	/**
@@ -173,17 +187,17 @@ public class BinomialHeap{
 		return count;
 	}
 
-	public void find_new_min (BinomialHeap binomial_Heap){
+	public void findNewMin (BinomialHeap binomial_Heap){
 		HeapNode last = binomial_Heap.getLast();
 		HeapNode pointer = last;
-		HeapNode new_min = last;
+		HeapNode newMin = last;
 		while (pointer.getNext() != last ){
-			if (pointer.getItem().getKey() < new_min.getItem().getKey()){
-				new_min = pointer;
+			if (pointer.getItem().getKey() < newMin.getItem().getKey()){
+				newMin = pointer;
 			}
-			pointer.getNext();
+			pointer = pointer.getNext();
 		}
-		binomial_Heap.setMin(new_min);
+		binomial_Heap.setMin(newMin);
 	}
 
 
