@@ -63,13 +63,33 @@ public class BinomialHeap{
 		return item;
 	}
 
-	public BinomialHeap createHeapOfMinChildren (HeapNode deletedMin){
-		int rank = deletedMin.getRank();
-		int size = (Math.pow(2, rank)).intValue();
-		HeapNode last = deletedMin.getChild();
+	public BinomialHeap createHeapFromNodeChildren(HeapNode node){
+		int rank = node.getRank();
+		int size = (int)Math.pow(2, rank);
+		HeapNode last = node.getChild();
 		BinomialHeap newHeap = new BinomialHeap(size, last);
 		newHeap.findNewMin();
 		return newHeap;
+	}
+
+	public void disconnectNodeFromHeap (HeapNode node){
+		// TODO: handle case where node is the only node in heap
+		HeapNode nodeNext = node.getNext();
+		// First, we update the size of the heap
+		int sizeDec = (int)Math.pow(2, node.getRank());
+		this.setSize(this.size - sizeDec);
+		// Second, we find HeapNode pointing to the node we disconnect
+		HeapNode nodePrev = node.getNext();
+		while (nodePrev.getNext().getRank() != node.getRank()) {
+			nodePrev = nodePrev.getNext();
+		}
+		// Third, we update the last pointer of the heap and skip the node.
+		if (this.last.getRank() == node.getRank())
+			this.setLast(nodePrev);
+		nodePrev.setNext(nodeNext);
+		node.setNext(node);
+		// Finally, we update the min of the heap.
+		this.findNewMin();
 	}
 
 	/**
@@ -79,8 +99,13 @@ public class BinomialHeap{
 	 */
 	public void deleteMin()
 	{
-		return; // should be replaced by student code
-
+		HeapNode deletedMin = this.min;
+		// First, we disconnect the deleted node from the heap.
+		this.disconnectNodeFromHeap(deletedMin);
+		// Second, we create a new heap from the deleted node's children.
+		BinomialHeap heap2 = this.createHeapFromNodeChildren(deletedMin);
+		// Finally, we meld the 2 heaps together.
+		this.meld(heap2);
 	}
 
 	/**
@@ -174,7 +199,7 @@ public class BinomialHeap{
 					if (heap1_pointer.getRank() == heap2_pointer.getRank()) {
 						HeapNode heap2_next_pointer = heap2_pointer.getNext();
 						heap2_prev.setNext(heap2_next_pointer);
-						heap1_pointer = compare_Heapnodes_And_Link(heap1_pointer, heap2_pointer);
+						heap1_pointer = compareHeapnodesAndLink(heap1_pointer, heap2_pointer);
 						if(heap1_pointer != heap1_first){
 							heap1_first = heap1_pointer;
 						}
@@ -205,7 +230,7 @@ public class BinomialHeap{
 		}
 	}
 
-	public HeapNode compare_Heapnodes_And_Link(HeapNode heap_node1, HeapNode heap_node2 ){
+	public HeapNode compareHeapnodesAndLink(HeapNode heap_node1, HeapNode heap_node2 ){
 		if (heap_node1.getItem().getKey() < heap_node2.getItem().getKey()){
 			link(heap_node2, heap_node1);
 			return heap_node1;
@@ -262,8 +287,8 @@ public class BinomialHeap{
 		return count;
 	}
 
-	public void findNewMin (BinomialHeap binomial_Heap){
-		HeapNode last = binomial_Heap.getLast();
+	public void findNewMin (){
+		HeapNode last = this.last;
 		HeapNode pointer = last;
 		HeapNode newMin = last;
 		while (pointer.getNext() != last ){
@@ -272,7 +297,7 @@ public class BinomialHeap{
 			}
 			pointer = pointer.getNext();
 		}
-		binomial_Heap.setMin(newMin);
+		this.setMin(newMin);
 	}
 
 
