@@ -175,6 +175,9 @@ public class BinomialHeap{
 						HeapNode heap2_next_pointer = heap2_pointer.getNext();
 						heap2_prev.setNext(heap2_next_pointer);
 						heap1_pointer = compare_Heapnodes_And_Link(heap1_pointer, heap2_pointer);
+						if(heap1_pointer != heap1_first){
+							heap1_first = heap1_pointer;
+						}
 						heap2_pointer = heap2_next_pointer;
 					}
 
@@ -189,6 +192,14 @@ public class BinomialHeap{
 						heap1_prev = heap1_pointer;
 						heap1_pointer = heap1_pointer.getNext();
 					}
+				}
+				if(heap2_pointer != null){
+					heap2.getLast().setNext(heap1_first);
+					this.getLast().setNext(heap2_pointer);
+					this.setLast(heap2.getLast());
+				}
+				if(heap2.getMin().getItem().getKey() < this.getMin().getItem().getKey()){
+					this.setMin(heap2.getMin());
 				}
 			}
 		}
