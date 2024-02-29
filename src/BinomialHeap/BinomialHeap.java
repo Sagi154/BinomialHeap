@@ -151,14 +151,67 @@ public class BinomialHeap{
 	 */
 	public void meld(BinomialHeap heap2)
 	{
-		return; // should be replaced by student code   		
+		HeapNode heap1_prev = this.getLast();
+		HeapNode heap2_prev = heap2.getLast();
+
+		HeapNode heap1_first = heap1_prev.getNext();
+		HeapNode heap1_pointer = heap1_first;
+
+		HeapNode heap2_first = heap2_prev.getNext();
+		HeapNode heap2_pointer = heap2_first;
+
+		while((heap1_pointer.getItem().getKey() != heap1_first.getItem().getKey()) && (heap2_pointer  != null )){
+			if(heap1_pointer.getRank() == heap2_pointer.getRank()){
+				HeapNode heap2_next_pointer = heap2_pointer.getNext();
+				heap2_prev.setNext(heap2_next_pointer);
+
+				heap1_pointer = compare_Heapnodes_And_Link(heap1_pointer, heap2_pointer);
+
+				heap2_pointer = heap2_next_pointer;
+			}
+			else if (heap1_pointer.getRank() > heap2_pointer.getRank()) {
+				heap1_prev.setNext(heap2_pointer);
+				heap2_pointer.setNext(heap1_pointer);
+				heap2_prev = heap2_pointer;
+				heap2_pointer = heap2_pointer.getNext();
+			}
+			else{
+				heap1_prev = heap1_pointer;
+				heap1_pointer = heap1_pointer.getNext();
+			}
+		}
+
 	}
 
-	/**
-	 * 
-	 * Return the number of elements in the heap
-	 *   
-	 */
+	public HeapNode compare_Heapnodes_And_Link(HeapNode heap_node1, HeapNode heap_node2 ){
+		if (heap_node1.getItem().getKey() < heap_node2.getItem().getKey()){
+			link(heap_node2, heap_node1);
+			return heap_node1;
+		}
+		else {
+			link(heap_node1, heap_node2);
+			return heap_node2;
+		}
+
+	}
+
+	public HeapNode link(HeapNode bigger_heap_node, HeapNode smaller_heap_node){
+		if (smaller_heap_node.getChild() != null){
+			bigger_heap_node.setNext(smaller_heap_node.getChild().getNext());
+			smaller_heap_node.getChild().setNext(bigger_heap_node);
+		}
+		smaller_heap_node.setChild(bigger_heap_node);
+		bigger_heap_node.setParent(smaller_heap_node);
+		smaller_heap_node.setRank(1 + smaller_heap_node.getRank());
+		return smaller_heap_node;
+	}
+
+
+		/**
+         *
+         * Return the number of elements in the heap
+         *
+         */
 	public int size() { return this.size; }
 
 	/**
