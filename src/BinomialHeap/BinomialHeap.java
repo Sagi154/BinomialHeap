@@ -151,36 +151,47 @@ public class BinomialHeap{
 	 */
 	public void meld(BinomialHeap heap2)
 	{
-		HeapNode heap1_prev = this.getLast();
-		HeapNode heap2_prev = heap2.getLast();
+		if (heap2.getLast() != null){
+			if (this.getLast() == null){
+				this.setMin(heap2.getMin());
+				this.setLast(heap2.getLast());
 
-		HeapNode heap1_first = heap1_prev.getNext();
-		HeapNode heap1_pointer = heap1_first;
-
-		HeapNode heap2_first = heap2_prev.getNext();
-		HeapNode heap2_pointer = heap2_first;
-
-		while((heap1_pointer.getItem().getKey() != heap1_first.getItem().getKey()) && (heap2_pointer  != null )){
-			if(heap1_pointer.getRank() == heap2_pointer.getRank()){
-				HeapNode heap2_next_pointer = heap2_pointer.getNext();
-				heap2_prev.setNext(heap2_next_pointer);
-
-				heap1_pointer = compare_Heapnodes_And_Link(heap1_pointer, heap2_pointer);
-
-				heap2_pointer = heap2_next_pointer;
+				/** size?
+			 	*/
 			}
-			else if (heap1_pointer.getRank() > heap2_pointer.getRank()) {
-				heap1_prev.setNext(heap2_pointer);
-				heap2_pointer.setNext(heap1_pointer);
-				heap2_prev = heap2_pointer;
-				heap2_pointer = heap2_pointer.getNext();
-			}
-			else{
-				heap1_prev = heap1_pointer;
-				heap1_pointer = heap1_pointer.getNext();
+			else {
+				HeapNode heap1_prev = this.getLast();
+				HeapNode heap2_prev = heap2.getLast();
+
+				HeapNode heap1_first = heap1_prev.getNext();
+				HeapNode heap1_pointer = heap1_first;
+
+				HeapNode heap2_first = heap2_prev.getNext();
+				HeapNode heap2_pointer = heap2_first;
+
+				while ((heap1_pointer.getItem().getKey() != heap1_first.getItem().getKey()) && (heap2_pointer != null)) {
+
+					if (heap1_pointer.getRank() == heap2_pointer.getRank()) {
+						HeapNode heap2_next_pointer = heap2_pointer.getNext();
+						heap2_prev.setNext(heap2_next_pointer);
+						heap1_pointer = compare_Heapnodes_And_Link(heap1_pointer, heap2_pointer);
+						heap2_pointer = heap2_next_pointer;
+					}
+
+					else if (heap1_pointer.getRank() > heap2_pointer.getRank()) {
+						heap1_prev.setNext(heap2_pointer);
+						heap2_pointer.setNext(heap1_pointer);
+						heap2_prev = heap2_pointer;
+						heap2_pointer = heap2_pointer.getNext();
+					}
+
+					else {
+						heap1_prev = heap1_pointer;
+						heap1_pointer = heap1_pointer.getNext();
+					}
+				}
 			}
 		}
-
 	}
 
 	public HeapNode compare_Heapnodes_And_Link(HeapNode heap_node1, HeapNode heap_node2 ){
