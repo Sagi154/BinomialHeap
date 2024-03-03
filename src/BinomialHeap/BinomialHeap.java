@@ -58,8 +58,18 @@ public class BinomialHeap{
 	public HeapItem insert(int key, String info) 
 	{    
 		HeapItem item = this.makeNewItem(key, info);
+		System.out.println("item is - \n  key: " + item.getKey() + "\n info: " + item.getInfo() + "\n noderank: " +item.getNode().getRank());
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
+		HeapNode last = heap2.getLast();
+		System.out.println("last is - \n  key: " + last.getItem().getKey() + "\n info: " + last.getItem().getInfo() + "\n noderank: " +last.getRank());
+		HeapNode min = heap2.getMin();
+		System.out.println("min is - \n  key: " + min.getItem().getKey() + "\n info: " + min.getItem().getInfo() + "\n noderank: " +min.getRank());
+		System.out.println("heap2 size: "+ heap2.size());
 		this.meld(heap2);
+		System.out.println("this heap is: \n");
+		PrintHeap.printHeap(this, true);
+		System.out.println("heap2 is: \n");
+		PrintHeap.printHeap(heap2, true);
 		return item;
 	}
 
@@ -73,7 +83,13 @@ public class BinomialHeap{
 	}
 
 	public void disconnectNodeFromHeap (HeapNode node){
-		// TODO: handle case where node is the only node in heap
+		// handles case where node is the only node in heap
+		if (this.last.getNext().getRank() == this.last.getRank()){
+			this.size = 0;
+			this.last = null;
+			this.min = null;
+			return;
+		}
 		HeapNode nodeNext = node.getNext();
 		// First, we update the size of the heap
 		int sizeDec = (int)Math.pow(2, node.getRank());
@@ -99,6 +115,9 @@ public class BinomialHeap{
 	 */
 	public void deleteMin()
 	{
+		if (this.size == 0){
+			return ;
+		}
 		HeapNode deletedMin = this.min;
 		// First, we disconnect the deleted node from the heap.
 		this.disconnectNodeFromHeap(deletedMin);
@@ -306,11 +325,11 @@ public class BinomialHeap{
 	 *  
 	 */
 	public class HeapNode{
-		protected HeapItem item;
-		protected HeapNode child;
-		protected HeapNode next;
-		protected HeapNode parent;
-		protected int rank = 0;
+		public HeapItem item;
+		public HeapNode child;
+		public HeapNode next;
+		public HeapNode parent;
+		public int rank = 0;
 
 		public HeapNode(){
 
@@ -360,9 +379,9 @@ public class BinomialHeap{
 	 *  
 	 */
 	public class HeapItem{
-		protected HeapNode node;
-		protected int key;
-		protected String info;
+		public HeapNode node;
+		public int key;
+		public String info;
 
 		public HeapItem(){
 
