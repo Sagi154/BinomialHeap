@@ -31,7 +31,8 @@ public class PrintHeap {
 		if (node.next != initialRoot) {
 			printTree(node.next, depth, initialRoot); // Print sibling recursively until we reach the initial root
 			printAtDepth(depth, arrowUp); // arrow up pointing to next, if next is not circular
-		} else if ( node.next == initialRoot ) {
+		}
+		else if ( node.next == initialRoot ) {
 		   printAtDepth(depth, arrowEndOfLayer);	// arrow looping back
 												  	// indicating we've reached end
 												  	// of next nodes in layer

@@ -194,8 +194,8 @@ public class BinomialHeap{
 		PrintHeap.printHeap(this, true);
 		System.out.println("Heap2 looks like: \n ");
 		PrintHeap.printHeap(heap2, true);
-		if (heap2.getLast() != null){
-			if (this.getLast() == null){
+		if (!heap2.empty()){
+			if (this.empty()){
 				this.setMin(heap2.getMin());
 				this.setLast(heap2.getLast());
 				this.setSize(heap2.size());
@@ -210,10 +210,13 @@ public class BinomialHeap{
 				HeapNode heap1_first = heap1_prev.getNext();
 				HeapNode heap1_pointer = heap1_first;
 
+				int heap1_starting_size = this.size;
+
+				int counter = 0;
+
 				HeapNode heap2_pointer = heap2_last.getNext();
 
-				while ((heap1_pointer.getItem().getKey() != heap1_first.getItem().getKey()) && (heap2_pointer != null)) {
-
+				while (counter <= heap1_starting_size && (!heap2.empty())) {
 					if (heap1_pointer.getRank() == heap2_pointer.getRank()) {
 						HeapNode heap2_next_pointer = heap2_pointer.getNext();
 						heap2_last.setNext(heap2_next_pointer);
@@ -221,10 +224,33 @@ public class BinomialHeap{
 
 						heap1_pointer = compareHeapnodesAndLink(heap1_pointer, heap2_pointer);
 
-						if(tmp_heap1_pointer == heap1_first && heap1_pointer != heap1_first){
-							heap1_first = heap1_pointer;
+						heap2.setSize(heap2.size -1 );
+
+						while (heap1_pointer.getRank() == heap1_pointer.getNext().getRank() && heap1_pointer != heap1_pointer.getNext()){
+							HeapNode heap1_future_next_pointer = heap1_pointer.getNext().getNext();
+							heap1_pointer = compareHeapnodesAndLink(heap1_pointer, heap1_pointer.getNext());
+
+							if (heap1_prev != heap1_pointer.getChild()){
+								heap1_prev.setNext(heap1_pointer);
+							}
+
+							heap1_pointer.setNext(heap1_future_next_pointer);
+							if (this.getLast().getRank() < heap1_pointer.getRank()){
+								this.setLast(heap1_pointer);
+							}
+							this.setSize(this.size - 1);
+							counter++;
 						}
-						heap2_pointer = heap2_next_pointer;
+
+//						if(tmp_heap1_pointer == heap1_first && heap1_pointer != heap1_first){
+//							heap1_first = heap1_pointer;
+//						}
+						if (heap2_pointer.getRank() == heap2_next_pointer.getRank()) {
+							heap2_pointer = null;
+						}
+						else {
+							heap2_pointer = heap2_next_pointer;
+						}
 					}
 
 					else if (heap1_pointer.getRank() > heap2_pointer.getRank()) {
@@ -233,36 +259,38 @@ public class BinomialHeap{
 						heap2_last.setNext(heap2_next_pointer);
 						heap2_pointer.setNext(heap1_pointer);
 						heap2_pointer = heap2_next_pointer;
+						this.setSize(1 + this.size);
+						heap2.setSize(heap2.size -1 );
 					}
 
 					else {
 						heap1_prev = heap1_pointer;
 						heap1_pointer = heap1_pointer.getNext();
+						counter++;
 					}
 				}
-				if(heap2_pointer != null){
+				if(!heap2.empty()){
 					heap2.getLast().setNext(heap1_first);
 					this.getLast().setNext(heap2_pointer);
 					this.setLast(heap2.getLast());
-					this.setSize(heap2.size());
+					this.setSize(this.size + heap2.size());
 				}
 				if(heap2.getMin().getItem().getKey() < this.getMin().getItem().getKey()){
 					this.setMin(heap2.getMin());
 				}
 				heap2.setMin(null);
 				heap2.setLast(null);
-				this.setSize(this.size + heap2.size());
 			}
 		}
 	}
 
 	public HeapNode compareHeapnodesAndLink(HeapNode heap_node1, HeapNode heap_node2 ){
 		if (heap_node1.getItem().getKey() < heap_node2.getItem().getKey()){
-			link(heap_node2, heap_node1);
+			heap_node1 = link(heap_node2, heap_node1);
 			return heap_node1;
 		}
 		else {
-			link(heap_node1, heap_node2);
+			heap_node2 = link(heap_node1, heap_node2);
 			return heap_node2;
 		}
 
@@ -270,7 +298,7 @@ public class BinomialHeap{
 
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
 		System.out.println("------------------in link-----------------");
-		System.out.println("About to link biggerHeapNode: " + biggerHeapNode + "\n to smallerHeapNode: " + smallerHeapNode);
+		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
 			smallerHeapNode.getChild().setNext(biggerHeapNode);
