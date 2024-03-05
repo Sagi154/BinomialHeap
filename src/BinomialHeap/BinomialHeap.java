@@ -57,20 +57,13 @@ public class BinomialHeap{
 	 *
 	 */
 	public HeapItem insert(int key, String info) 
-	{    
+	{
 		HeapItem item = this.makeNewItem(key, info);
-//		System.out.println("item is - \n  key: " + item.getKey() + "\n info: " + item.getInfo() + "\n noderank: " +item.getNode().getRank());
+		System.out.println("About to insert:" + item);
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
-		HeapNode last = heap2.getLast();
-//		System.out.println("last is - \n  key: " + last.getItem().getKey() + "\n info: " + last.getItem().getInfo() + "\n noderank: " +last.getRank());
-		HeapNode min = heap2.getMin();
-//		System.out.println("min is - \n  key: " + min.getItem().getKey() + "\n info: " + min.getItem().getInfo() + "\n noderank: " +min.getRank());
-//		System.out.println("heap2 size: "+ heap2.size());
+		System.out.println("last is:" + heap2.getLast().getItem());
+		System.out.println("min is:" + heap2.getMin().getItem());
 		this.meld(heap2);
-//		System.out.println("this heap is: \n");
-//		PrintHeap.printHeap(this, true);
-//		System.out.println("heap2 is: \n");
-//		PrintHeap.printHeap(heap2, true);
 		return item;
 	}
 
@@ -196,6 +189,11 @@ public class BinomialHeap{
 	 */
 	public void meld(BinomialHeap heap2)
 	{
+		System.out.println("------------------About to meld----------------");
+		System.out.println("This heap look like: \n ");
+		PrintHeap.printHeap(this, true);
+		System.out.println("Heap2 looks like: \n ");
+		PrintHeap.printHeap(heap2, true);
 		if (heap2.getLast() != null){
 			if (this.getLast() == null){
 				this.setMin(heap2.getMin());
@@ -270,15 +268,17 @@ public class BinomialHeap{
 
 	}
 
-	public HeapNode link(HeapNode bigger_heap_node, HeapNode smaller_heap_node){
-		if (smaller_heap_node.getChild() != null){
-			bigger_heap_node.setNext(smaller_heap_node.getChild().getNext());
-			smaller_heap_node.getChild().setNext(bigger_heap_node);
+	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
+		System.out.println("------------------in link-----------------");
+		System.out.println("About to link biggerHeapNode: " + biggerHeapNode + "\n to smallerHeapNode: " + smallerHeapNode);
+		if (smallerHeapNode.getChild() != null){
+			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
+			smallerHeapNode.getChild().setNext(biggerHeapNode);
 		}
-		smaller_heap_node.setChild(bigger_heap_node);
-		bigger_heap_node.setParent(smaller_heap_node);
-		smaller_heap_node.setRank(1 + smaller_heap_node.getRank());
-		return smaller_heap_node;
+		smallerHeapNode.setChild(biggerHeapNode);
+		biggerHeapNode.setParent(smallerHeapNode);
+		smallerHeapNode.setRank(1 + smallerHeapNode.getRank());
+		return smallerHeapNode;
 	}
 
 
@@ -418,6 +418,10 @@ public class BinomialHeap{
 		}
 
 		public void setNode(HeapNode node) { this.node = node; }
+
+		public String toString(){
+			return "\n    key: " + this.key + "\n    info: " + this.info + "\n    rank: " + this.node.getRank();
+		}
 	}
 
 }
