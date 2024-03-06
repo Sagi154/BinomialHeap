@@ -197,7 +197,7 @@ public class BinomialHeap{
 		System.out.println("Heap2 looks like: \n ");
 		PrintHeap.printHeap(heap2, true);
 		if (!heap2.empty()){
-			if (this.empty()){
+			if (this.empty()){ 					// if the heap is empty we replace it with heap2
 				this.setMin(heap2.getMin());
 				this.setLast(heap2.getLast());
 				this.setSize(heap2.size());
@@ -205,71 +205,83 @@ public class BinomialHeap{
 				heap2.setLast(null);
 				heap2.setMin(null);
 			}
-			else {
+			else {								// if both heaps aren't empty
 				HeapNode heap1Prev = this.getLast();
 				HeapNode heap2Last = heap2.getLast();
 
 				HeapNode heap1First = heap1Prev.getNext();
 				HeapNode heap1Pointer = heap1First;
 
-				int heap1StartingSize = this.size;
+				int heap1StartingNumOfTrees = this.numTrees();
 
 				int counter = 0;
 
 				HeapNode heap2Pointer = heap2Last.getNext();
 
-				while (counter <= heap1StartingSize && (!heap2.empty())) {
+				while (counter <= heap1StartingNumOfTrees && (heap2Pointer != null)) {
+					 // the loop will run as long as we still have trees in both of the heaps that we haven't visited
+
+					HeapNode heap2NextPointer = heap2Pointer.getNext();
+					if (heap2Pointer == heap2NextPointer) {
+						 // check if heap2Pointer pointing the last tree in heap 2 we didn't connect yet
+
+						heap2NextPointer = null;
+					}
+
 					if (heap1Pointer.getRank() == heap2Pointer.getRank()) {
-						HeapNode heap2NextPointer = heap2Pointer.getNext();
+						 // check if we can connect the trees
+
 						heap2Last.setNext(heap2NextPointer);
 						HeapNode heap1_futureNext = heap1Pointer.getNext();
 
-						heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap2Pointer);
+						heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap2Pointer); //link the trees
 
 						heap1Prev.setNext(heap1Pointer);
 						heap1Pointer.setNext(heap1_futureNext);
 
-						heap2.setSize(heap2.size -1 );
+						heap2Pointer = heap2NextPointer;
 
 						while (heap1Pointer.getRank() == heap1Pointer.getNext().getRank() && heap1Pointer != heap1Pointer.getNext()){
+
+							 // the loop will run as long as there are 2 different trees in our heap (this) that have the same rank
+
 							HeapNode heap1_future_next_pointer = heap1Pointer.getNext().getNext();
 							heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap1Pointer.getNext());
 
-							if (heap1Prev != heap1Pointer.getChild()){
-								heap1Prev.setNext(heap1Pointer);
+							if (heap1Prev == heap1Pointer.getChild()){
+								 // special case 1 - we had only 2 trees in this heap before we linked them, and now we need to
+								 // update heap1Prev (it pointed to a child)
+
+								heap1Prev = heap1Pointer;
 							}
+
 							if (heap1Pointer.getNext() == heap1Pointer.getChild()){
+								// update the next of heap1Pointer to himself if after the linking
 								heap1Pointer.setNext(heap1Pointer);
 							}
 							else{
 								heap1Pointer.setNext(heap1_future_next_pointer);
 							}
+
+							if (heap1Prev.getNext() == heap1Pointer.getChild()){
+								heap1Prev.setNext(heap1Pointer);
+							}
+
 							if (this.getLast().getRank() < heap1Pointer.getRank()){
 								this.setLast(heap1Pointer);
 							}
-							this.setSize(this.size - 1);
 							counter++;
-						}
-
-//						if(tmp_heap1_pointer == heap1_first && heap1_pointer != heap1_first){
-//							heap1_first = heap1_pointer;
-//						}
-						if (heap2Pointer.getRank() == heap2NextPointer.getRank()) {
-							heap2Pointer = null;
-						}
-						else {
-							heap2Pointer = heap2NextPointer;
 						}
 					}
 
 					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
 						heap1Prev.setNext(heap2Pointer);
-						HeapNode heap2NextPointer = heap2Pointer.getNext();
-						heap2Last.setNext(heap2NextPointer);
 						heap2Pointer.setNext(heap1Pointer);
 						heap2Pointer = heap2NextPointer;
-						this.setSize(1 + this.size);
-						heap2.setSize(heap2.size -1 );
+
+						if (heap2Pointer != null){
+							heap2Last.setNext(heap2NextPointer);
+						}
 					}
 
 					else {
@@ -278,11 +290,10 @@ public class BinomialHeap{
 						counter++;
 					}
 				}
-				if(!heap2.empty()){
+				if(heap2Pointer != null){
 					heap2.getLast().setNext(heap1First);
 					this.getLast().setNext(heap2Pointer);
 					this.setLast(heap2.getLast());
-					this.setSize(this.size + heap2.size());
 				}
 				if(heap2.getMin().getItem().getKey() < this.getMin().getItem().getKey()){
 					this.setMin(heap2.getMin());
