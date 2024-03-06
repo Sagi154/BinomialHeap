@@ -256,8 +256,16 @@ public class BinomialHeap{
 							}
 
 							if (heap1Pointer.getNext() == heap1Pointer.getChild()){
-								// update the next of heap1Pointer to himself if after the linking
-								heap1Pointer.setNext(heap1Pointer);
+								// 2 optional cases:
+								// 1. if heap1Pointer hasn't changed, we need to update his next (is former one is now his child)
+								// 2. if heap1Pointer changed, and there is only one tree after the linking
+								if (heap1_future_next_pointer != heap1Pointer.getChild()){
+									// there are more than 1 tree after the linking
+									heap1Pointer.setNext(heap1_future_next_pointer);
+								}
+								else {
+									heap1Pointer.setNext(heap1Pointer);
+								}
 							}
 							else{
 								heap1Pointer.setNext(heap1_future_next_pointer);
