@@ -59,7 +59,7 @@ public class BinomialHeap{
 	public HeapItem insert(int key, String info) 
 	{
 		HeapItem item = this.makeNewItem(key, info);
-		System.out.println("About to insert:" + item);
+		System.out.println("------------------About to insert:" + item + "---------------------");
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
 		System.out.println("last is:" + heap2.getLast().getItem());
 		System.out.println("min is:" + heap2.getMin().getItem());
@@ -189,6 +189,8 @@ public class BinomialHeap{
 	 */
 	public void meld(BinomialHeap heap2)
 	{
+		int thisHeapSize = this.size;
+		int heap2HeapSize= heap2.size();
 		System.out.println("------------------About to meld----------------");
 		System.out.println("This heap look like: \n ");
 		PrintHeap.printHeap(this, true);
@@ -204,39 +206,46 @@ public class BinomialHeap{
 				heap2.setMin(null);
 			}
 			else {
-				HeapNode heap1_prev = this.getLast();
-				HeapNode heap2_last = heap2.getLast();
+				HeapNode heap1Prev = this.getLast();
+				HeapNode heap2Last = heap2.getLast();
 
-				HeapNode heap1_first = heap1_prev.getNext();
-				HeapNode heap1_pointer = heap1_first;
+				HeapNode heap1First = heap1Prev.getNext();
+				HeapNode heap1Pointer = heap1First;
 
-				int heap1_starting_size = this.size;
+				int heap1StartingSize = this.size;
 
 				int counter = 0;
 
-				HeapNode heap2_pointer = heap2_last.getNext();
+				HeapNode heap2Pointer = heap2Last.getNext();
 
-				while (counter <= heap1_starting_size && (!heap2.empty())) {
-					if (heap1_pointer.getRank() == heap2_pointer.getRank()) {
-						HeapNode heap2_next_pointer = heap2_pointer.getNext();
-						heap2_last.setNext(heap2_next_pointer);
-						HeapNode tmp_heap1_pointer = heap1_pointer;
+				while (counter <= heap1StartingSize && (!heap2.empty())) {
+					if (heap1Pointer.getRank() == heap2Pointer.getRank()) {
+						HeapNode heap2NextPointer = heap2Pointer.getNext();
+						heap2Last.setNext(heap2NextPointer);
+						HeapNode heap1_futureNext = heap1Pointer.getNext();
 
-						heap1_pointer = compareHeapnodesAndLink(heap1_pointer, heap2_pointer);
+						heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap2Pointer);
+
+						heap1Prev.setNext(heap1Pointer);
+						heap1Pointer.setNext(heap1_futureNext);
 
 						heap2.setSize(heap2.size -1 );
 
-						while (heap1_pointer.getRank() == heap1_pointer.getNext().getRank() && heap1_pointer != heap1_pointer.getNext()){
-							HeapNode heap1_future_next_pointer = heap1_pointer.getNext().getNext();
-							heap1_pointer = compareHeapnodesAndLink(heap1_pointer, heap1_pointer.getNext());
+						while (heap1Pointer.getRank() == heap1Pointer.getNext().getRank() && heap1Pointer != heap1Pointer.getNext()){
+							HeapNode heap1_future_next_pointer = heap1Pointer.getNext().getNext();
+							heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap1Pointer.getNext());
 
-							if (heap1_prev != heap1_pointer.getChild()){
-								heap1_prev.setNext(heap1_pointer);
+							if (heap1Prev != heap1Pointer.getChild()){
+								heap1Prev.setNext(heap1Pointer);
 							}
-
-							heap1_pointer.setNext(heap1_future_next_pointer);
-							if (this.getLast().getRank() < heap1_pointer.getRank()){
-								this.setLast(heap1_pointer);
+							if (heap1Pointer.getNext() == heap1Pointer.getChild()){
+								heap1Pointer.setNext(heap1Pointer);
+							}
+							else{
+								heap1Pointer.setNext(heap1_future_next_pointer);
+							}
+							if (this.getLast().getRank() < heap1Pointer.getRank()){
+								this.setLast(heap1Pointer);
 							}
 							this.setSize(this.size - 1);
 							counter++;
@@ -245,33 +254,33 @@ public class BinomialHeap{
 //						if(tmp_heap1_pointer == heap1_first && heap1_pointer != heap1_first){
 //							heap1_first = heap1_pointer;
 //						}
-						if (heap2_pointer.getRank() == heap2_next_pointer.getRank()) {
-							heap2_pointer = null;
+						if (heap2Pointer.getRank() == heap2NextPointer.getRank()) {
+							heap2Pointer = null;
 						}
 						else {
-							heap2_pointer = heap2_next_pointer;
+							heap2Pointer = heap2NextPointer;
 						}
 					}
 
-					else if (heap1_pointer.getRank() > heap2_pointer.getRank()) {
-						heap1_prev.setNext(heap2_pointer);
-						HeapNode heap2_next_pointer = heap2_pointer.getNext();
-						heap2_last.setNext(heap2_next_pointer);
-						heap2_pointer.setNext(heap1_pointer);
-						heap2_pointer = heap2_next_pointer;
+					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
+						heap1Prev.setNext(heap2Pointer);
+						HeapNode heap2NextPointer = heap2Pointer.getNext();
+						heap2Last.setNext(heap2NextPointer);
+						heap2Pointer.setNext(heap1Pointer);
+						heap2Pointer = heap2NextPointer;
 						this.setSize(1 + this.size);
 						heap2.setSize(heap2.size -1 );
 					}
 
 					else {
-						heap1_prev = heap1_pointer;
-						heap1_pointer = heap1_pointer.getNext();
+						heap1Prev = heap1Pointer;
+						heap1Pointer = heap1Pointer.getNext();
 						counter++;
 					}
 				}
 				if(!heap2.empty()){
-					heap2.getLast().setNext(heap1_first);
-					this.getLast().setNext(heap2_pointer);
+					heap2.getLast().setNext(heap1First);
+					this.getLast().setNext(heap2Pointer);
 					this.setLast(heap2.getLast());
 					this.setSize(this.size + heap2.size());
 				}
@@ -282,16 +291,17 @@ public class BinomialHeap{
 				heap2.setLast(null);
 			}
 		}
+		this.setSize(thisHeapSize + heap2HeapSize);
 	}
 
-	public HeapNode compareHeapnodesAndLink(HeapNode heap_node1, HeapNode heap_node2 ){
-		if (heap_node1.getItem().getKey() < heap_node2.getItem().getKey()){
-			heap_node1 = link(heap_node2, heap_node1);
-			return heap_node1;
+	public HeapNode compareHeapNodesAndLink(HeapNode heapNode1, HeapNode heapNode2 ){
+		if (heapNode1.getItem().getKey() < heapNode2.getItem().getKey()){
+			heapNode1 = link(heapNode2, heapNode1);
+			return heapNode1;
 		}
 		else {
-			heap_node2 = link(heap_node1, heap_node2);
-			return heap_node2;
+			heapNode2 = link(heapNode1, heapNode2);
+			return heapNode2;
 		}
 
 	}
@@ -299,6 +309,8 @@ public class BinomialHeap{
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
 		System.out.println("------------------in link-----------------");
 		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
+		System.out.println("Rank of smallerHeapNode is: " + smallerHeapNode.getRank());
+		biggerHeapNode.setNext(biggerHeapNode);
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
 			smallerHeapNode.getChild().setNext(biggerHeapNode);
@@ -306,6 +318,8 @@ public class BinomialHeap{
 		smallerHeapNode.setChild(biggerHeapNode);
 		biggerHeapNode.setParent(smallerHeapNode);
 		smallerHeapNode.setRank(1 + smallerHeapNode.getRank());
+		System.out.println("child next: " + biggerHeapNode.getNext().getItem().getKey());
+
 		return smallerHeapNode;
 	}
 

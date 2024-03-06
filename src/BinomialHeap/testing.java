@@ -1,41 +1,33 @@
 package BinomialHeap;
 
+import java.util.Random;
+
 
 public class testing {
 
-    public static void testInsert(){
+    public static void testInsert(int nodesCount){
+        Random random = new Random();
         System.out.println("---------Testing insert-----------");
         BinomialHeap heap = new BinomialHeap();
         PrintHeap.printHeap(heap, true);
         int key;
-        heap.insert(5, "aa");
-        key = 5;
-        System.out.println("Heap after inserting key: "+ key +" \n");
+//        for (int i = 0; i < nodesCount; i++){
+//            key = random.nextInt(nodesCount);
+//            heap.insert(key, "aa");
+//            System.out.println("----------heap after insert: -------------------");
+//            PrintHeap.printHeap(heap, true);
+//        }
+        heap.insert(0, "aa");
+        heap.insert(2, "aa");
+        heap.insert(8, "aa");
+        heap.insert(0, "aa");
         PrintHeap.printHeap(heap, true);
-        System.out.println("Heap size after inserting key:" + key + "\n " + heap.size());
-        heap.insert(8, "ab");
-        key = 8;
-        System.out.println("Heap after inserting key: "+ key +" \n");
+        heap.insert(3, "aa");
+
+
         PrintHeap.printHeap(heap, true);
-        System.out.println("Heap size after inserting key:" + key + "\n " + heap.size());
-        heap.insert(4, "Ab");
-        key = 4;
-        System.out.println("Heap after inserting key: "+ key +" \n");
-        PrintHeap.printHeap(heap, true);
-        System.out.println("Heap size after inserting key:" + key + "\n " + heap.size());
-        heap.insert(10, "Ab");
-        key = 10;
-        System.out.println("Heap after inserting key: "+ key +" \n");
-        PrintHeap.printHeap(heap, true);
-        System.out.println("Heap size after inserting key:" + key + "\n " + heap.size());
-        heap.insert(15, "Ab");
-        key = 15;
-        System.out.println("Heap after inserting key: "+ key +" \n");
-        PrintHeap.printHeap(heap, true);
-        System.out.println("Heap size after inserting key:" + key + "\n " + heap.size());
-//        PrintHeap.printHeap(heap, true);
     }
     public static void main (String[] args){
-        testInsert();
+        testInsert(9);
     }
 }
