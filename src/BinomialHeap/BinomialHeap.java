@@ -244,8 +244,15 @@ public class BinomialHeap{
 						else{
 							heap1Prev = heap1Pointer;
 							heap1Pointer.setNext(heap1Pointer);
-
 						}
+
+						if (this.getLast().getRank() < heap1Pointer.getRank()){
+							// update the last's pointer in this heap if it changed
+							this.setLast(heap1Pointer);
+						}
+
+						System.out.println("parent: " + heap1Pointer.getItem().getKey() + "\n child: " + heap1Pointer.getChild().getItem().getKey());
+
 
 						heap2Pointer = heap2NextPointer;
 
@@ -273,6 +280,7 @@ public class BinomialHeap{
 								heap1Prev.setNext(heap1Pointer);
 								heap1Pointer.setNext(heap1_future_next_pointer);
 							}
+
 
 							//if (heap1Pointer.getNext() == heap1Pointer.getChild()){
 								// 2 optional cases:
