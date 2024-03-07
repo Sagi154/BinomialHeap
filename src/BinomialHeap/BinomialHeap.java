@@ -243,39 +243,55 @@ public class BinomialHeap{
 
 						while (heap1Pointer.getRank() == heap1Pointer.getNext().getRank() && heap1Pointer != heap1Pointer.getNext()){
 
-							 // the loop will run as long as there are 2 different trees in our heap (this) that have the same rank
+							 // the loop run as long as there are 2 different trees in our heap (this) that have the same rank
 
 							HeapNode heap1_future_next_pointer = heap1Pointer.getNext().getNext();
 							heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap1Pointer.getNext());
 
 							if (heap1Prev == heap1Pointer.getChild()){
-								 // special case 1 - we had only 2 trees in this heap before we linked them, and now we need to
-								 // update heap1Prev (it pointed to a child)
+								// special case 1 - we had only 2 trees in this heap before we linked them and heap1Pointer hasn't changed:
+								// we need to update heap1Prev and the next of heap1Pointer (they pointed to a child)
 
 								heap1Prev = heap1Pointer;
+								heap1Pointer.setNext(heap1Pointer);
 							}
-
-							if (heap1Pointer.getNext() == heap1Pointer.getChild()){
-								// 2 optional cases:
-								// 1. if heap1Pointer hasn't changed, we need to update his next (is former one is now his child)
-								// 2. if heap1Pointer changed, and there is only one tree after the linking
-								if (heap1_future_next_pointer != heap1Pointer.getChild()){
-									// there are more than 1 tree after the linking
-									heap1Pointer.setNext(heap1_future_next_pointer);
-								}
-								else {
-									heap1Pointer.setNext(heap1Pointer);
-								}
+							else if (heap1Prev == heap1Pointer) {
+								// special case 2 - we had only 2 trees in this heap before we linked them and heap1Pointer has been changed:
+								// we need to update the next of heap1Pointer (it pointed to a child)
+								heap1Pointer.setNext(heap1Pointer);
 							}
-							else{
+							else { //(heap1Prev != heap1Pointer.getChild() && heap1Prev != heap1Pointer)
+								// there were more than 2 trees before the linking (it doesn't matter if heap1Pointer changed)
+								heap1Prev.setNext(heap1Pointer);
 								heap1Pointer.setNext(heap1_future_next_pointer);
 							}
 
-							if (heap1Prev.getNext() == heap1Pointer.getChild()){
-								heap1Prev.setNext(heap1Pointer);
-							}
+							//if (heap1Pointer.getNext() == heap1Pointer.getChild()){
+								// 2 optional cases:
+								// 1. heap1Pointer hasn't changed: we need to update his next (is former one is now his child)
+								// 2. heap1Pointer has been changed, but we had only 2 trees in this heap before we linked them
+							//	if (heap1_future_next_pointer != heap1Pointer.getChild()){
+									// there were more than 2 trees before the linking: we are in case 1
+							//		heap1Pointer.setNext(heap1_future_next_pointer);
+							//	}
+							//	else {
+									// there were only 2 trees before the linking
+							//		heap1Pointer.setNext(heap1Pointer);
+							//	}
+
+						//	}
+						//	else{
+						//		heap1Pointer.setNext(heap1_future_next_pointer);
+						//	}
+
+						//if (heap1Prev.getNext() == heap1Pointer.getChild()){
+								// heap1Pointer has been changed, and now we need to update heap1Prev's
+								// next (former heap1Pointer is now a child )
+						//		heap1Prev.setNext(heap1Pointer);
+						//	}
 
 							if (this.getLast().getRank() < heap1Pointer.getRank()){
+								// update the last's pointer in this heap if it changed
 								this.setLast(heap1Pointer);
 							}
 							counter++;
@@ -283,27 +299,34 @@ public class BinomialHeap{
 					}
 
 					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
+						// we can't link this tree of heap 2, so we need to connect it before this tree of this heap
 						heap1Prev.setNext(heap2Pointer);
 						heap2Pointer.setNext(heap1Pointer);
 						heap2Pointer = heap2NextPointer;
 
 						if (heap2Pointer != null){
+							// check if we finished to meld
 							heap2Last.setNext(heap2NextPointer);
 						}
 					}
 
 					else {
+						// we can't link this tree of heap 2 to this tree of this heap, so we need to check with a bigger
+						// rank tree in this heap
 						heap1Prev = heap1Pointer;
 						heap1Pointer = heap1Pointer.getNext();
 						counter++;
 					}
 				}
 				if(heap2Pointer != null){
+					// we reached the biggest rank of this heap (including if it formed after the linking with some of heap2 trees),
+					// but we still have a tree in heap2 we didn't connect to this heap
 					heap2.getLast().setNext(heap1First);
 					this.getLast().setNext(heap2Pointer);
 					this.setLast(heap2.getLast());
 				}
 				if(heap2.getMin().getItem().getKey() < this.getMin().getItem().getKey()){
+					// the minimum key of both heaps was in heap2
 					this.setMin(heap2.getMin());
 				}
 				heap2.setMin(null);

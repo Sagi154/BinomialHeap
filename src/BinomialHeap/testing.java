@@ -13,7 +13,7 @@ public class testing {
         int key;
        for (int i = 0; i < nodesCount; i++){
             key = random.nextInt(nodesCount);
-           heap.insert(i, "aa");
+           heap.insert(key, "aa");
            //System.out.println("----------heap after insert: -------------------");
            //PrintHeap.printHeap(heap, true);
         }
@@ -21,13 +21,13 @@ public class testing {
 //        heap.insert(2, "aa");
 //        heap.insert(8, "aa");
 //        heap.insert(0, "aa");
-          PrintHeap.printHeap(heap, true);
+//          PrintHeap.printHeap(heap, true);
 //        heap.insert(3, "aa");
 
 
         PrintHeap.printHeap(heap, true);
     }
     public static void main (String[] args){
-        testInsert(128);
+        testInsert(4);
     }
 }
