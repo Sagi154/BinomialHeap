@@ -236,8 +236,16 @@ public class BinomialHeap{
 
 						heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap2Pointer); //link the trees
 
-						heap1Prev.setNext(heap1Pointer);
-						heap1Pointer.setNext(heap1_futureNext);
+						if (heap1Prev != heap1Pointer.getChild()){
+							// there were more than 1 node in this heap before the linking
+							heap1Prev.setNext(heap1Pointer);
+							heap1Pointer.setNext(heap1_futureNext);
+						}
+						else{
+							heap1Prev = heap1Pointer;
+							heap1Pointer.setNext(heap1Pointer);
+
+						}
 
 						heap2Pointer = heap2NextPointer;
 
@@ -351,7 +359,6 @@ public class BinomialHeap{
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
 		System.out.println("------------------in link-----------------");
 		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
-		System.out.println("Rank of smallerHeapNode is: " + smallerHeapNode.getRank());
 		biggerHeapNode.setNext(biggerHeapNode);
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
@@ -360,7 +367,7 @@ public class BinomialHeap{
 		smallerHeapNode.setChild(biggerHeapNode);
 		biggerHeapNode.setParent(smallerHeapNode);
 		smallerHeapNode.setRank(1 + smallerHeapNode.getRank());
-		System.out.println("child next: " + biggerHeapNode.getNext().getItem().getKey());
+		System.out.println("parent: " + biggerHeapNode.getParent().getItem().getKey() + " child " + smallerHeapNode.getChild().getNext().getItem().getKey());
 
 		return smallerHeapNode;
 	}
