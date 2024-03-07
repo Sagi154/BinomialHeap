@@ -1,9 +1,52 @@
 package BinomialHeap;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 
 public class testing {
+
+    public static void FirstTheoreticalTest (){
+
+    }
+
+    public static BinomialHeap insertFrom1ToCount(int nodesCount) {
+        BinomialHeap heap = new BinomialHeap();
+        for (int i = 1; i <= nodesCount; i++) {
+            heap.insert(i, "aa");
+        }
+        return heap;
+    }
+
+    public static BinomialHeap insertFromCountTo1(int nodesCount) {
+        BinomialHeap heap = new BinomialHeap();
+        for (int i = nodesCount; i >= 1; i--) {
+            heap.insert(i, "aa");
+        }
+        return heap;
+    }
+
+    public static BinomialHeap insertRandomOrder1ToCount (int nodesCount) {
+        Random random = new Random();
+        BinomialHeap heap = new BinomialHeap();
+        int key;
+        Integer[] keysInserted = new Integer[nodesCount];
+        for (int i = 0; i < nodesCount; i++) {
+            keysInserted[i] = i + 1;
+        }
+
+        List<Integer> list = Arrays.asList(keysInserted);
+        Collections.shuffle(list);
+        list.toArray(keysInserted);
+
+        for (int i = 0; i < nodesCount; i++) {
+            key = keysInserted[i];
+            heap.insert(key, "aa");
+        }
+        return heap;
+    }
 
     public static void testInsert(int nodesCount){
         Random random = new Random();
@@ -30,4 +73,5 @@ public class testing {
     public static void main (String[] args){
         testInsert(9);
     }
+
 }
