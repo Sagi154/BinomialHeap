@@ -9,7 +9,13 @@ import java.util.Random;
 public class testing {
 
     public static void FirstTheoreticalTest (){
-
+        int nodesCount;
+        BinomialHeap heap;
+        for ( int i = 1; i <= 6; i++)
+        {
+            nodesCount = (int)Math.pow(3, i+5) - 1;
+            heap = insertFrom1ToCount(nodesCount);
+        }
     }
 
     public static BinomialHeap insertFrom1ToCount(int nodesCount) {
@@ -71,7 +77,9 @@ public class testing {
         PrintHeap.printHeap(heap, true);
     }
     public static void main (String[] args){
-        testInsert(9);
+//        testInsert(9);
+        BinomialHeap heap = insertFrom1ToCount(10);
+        PrintHeap.printHeap(heap, true);
     }
 
 }

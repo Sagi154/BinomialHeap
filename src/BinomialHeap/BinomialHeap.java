@@ -6,13 +6,14 @@ package BinomialHeap;
  * An implementation of binomial heap over non-negative integers.
  * Based on exercise from previous semester.
  */
-public class BinomialHeap{
+public class BinomialHeap {
 
 	public int size = 0;
 	public HeapNode last;
 	public HeapNode min;
 
-	public BinomialHeap() {	}
+	public BinomialHeap() {
+	}
 
 	public BinomialHeap(int size, HeapNode last) {
 		this.size = size;
@@ -25,9 +26,13 @@ public class BinomialHeap{
 		this.size = 1;
 	}
 
-	public HeapNode getLast() { return last; }
+	public HeapNode getLast() {
+		return last;
+	}
 
-	public HeapNode getMin(){ return this.min; }
+	public HeapNode getMin() {
+		return this.min;
+	}
 
 	public void setSize(int size) {
 		this.size = size;
@@ -41,7 +46,7 @@ public class BinomialHeap{
 		this.min = newMin;
 	}
 
-	public HeapItem makeNewItem(int key, String info){
+	public HeapItem makeNewItem(int key, String info) {
 		HeapItem item = new HeapItem(key, info);
 		HeapNode node = new HeapNode(item);
 //		node.setItem(item);
@@ -50,35 +55,41 @@ public class BinomialHeap{
 	}
 
 	/**
-	 *
 	 * pre: key > 0
-	 *
+	 * <p>
 	 * Insert (key,info) into the heap and return the newly generated HeapItem.
-	 *
 	 */
-	public HeapItem insert(int key, String info)
-	{
+	public HeapItem insert(int key, String info) {
+		System.out.println("------------------------In insert-------------------");
 		HeapItem item = this.makeNewItem(key, info);
-		System.out.println("------------------About to insert:" + item + "---------------------");
+		System.out.println("About to insert: " + item);
+//		System.out.println("------------------About to insert:" + item + "---------------------");
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
-		System.out.println("last is:" + heap2.getLast().getItem());
-		System.out.println("min is:" + heap2.getMin().getItem());
+//		System.out.println("last is:" + heap2.getLast().getItem());
+//		System.out.println("min is:" + heap2.getMin().getItem());
+		System.out.println("Size before insert is:" + this.size);
 		this.meld(heap2);
+		System.out.println("Size after insert is:" + this.size);
+
 		return item;
 	}
 
-	public BinomialHeap createHeapFromNodeChildren(HeapNode node){
+	public BinomialHeap createHeapFromNodeChildren(HeapNode node) {
 		int rank = node.getRank();
-		int size = (int)Math.pow(2, rank);
+		int size = (int) Math.pow(2, rank) - 1;
 		HeapNode last = node.getChild();
+		node.setChild(null);
 		BinomialHeap newHeap = new BinomialHeap(size, last);
 		newHeap.findNewMin();
 		return newHeap;
 	}
 
-	public void disconnectNodeFromHeap (HeapNode node){
+	public void disconnectNodeFromHeap(HeapNode node) {
+//		System.out.println("--------------------------------In disconnect---------------------------");
+//		System.out.println("About to disconnect: " + node.getItem());
+//		System.out.println("Size before disconnect is:" + this.size);
 		// handles case where node is the only node in heap
-		if (this.last.getNext().getRank() == this.last.getRank()){
+		if (this.last.getNext().getRank() == this.last.getRank()) {
 			this.size = 0;
 			this.last = null;
 			this.min = null;
@@ -86,7 +97,7 @@ public class BinomialHeap{
 		}
 		HeapNode nodeNext = node.getNext();
 		// First, we update the size of the heap
-		int sizeDec = (int)Math.pow(2, node.getRank());
+		int sizeDec = (int) Math.pow(2, node.getRank());
 		this.setSize(this.size - sizeDec);
 		// Second, we find HeapNode pointing to the node we disconnect
 		HeapNode nodePrev = node.getNext();
@@ -100,33 +111,44 @@ public class BinomialHeap{
 		node.setNext(node);
 		// Finally, we update the min of the heap.
 		this.findNewMin();
+//		System.out.println("Size after disconnect is:" + this.size);
 	}
 
 	/**
-	 *
 	 * Delete the minimal item
-	 *
 	 */
-	public void deleteMin()
-	{
-		if (this.size == 0){
-			return ;
+	public void deleteMin() {
+		System.out.println("-------------------------Entered deleteMin-------------------");
+		System.out.println("Min is: " + this.min.getItem());
+		System.out.println("Size before deleteMin is:" + this.size);
+		if (this.size <= 1) {
+			this.min = null;
+			this.last = null;
+			this.size = 0;
+			return;
 		}
 		HeapNode deletedMin = this.min;
 		// First, we disconnect the deleted node from the heap.
 		this.disconnectNodeFromHeap(deletedMin);
 		// Second, we create a new heap from the deleted node's children.
-		BinomialHeap heap2 = this.createHeapFromNodeChildren(deletedMin);
+		BinomialHeap heap2 = null;
+		if (deletedMin.getRank() != 0 ) {
+			heap2 = this.createHeapFromNodeChildren(deletedMin);
+		}
 		// Finally, we meld the 2 heaps together.
 		this.meld(heap2);
+		System.out.println("adsfasfdasf delete min asdfasdfsdasf");
+		System.out.println("????????  Size after deleteMin is:" + this.size);
+
 	}
 
 	/**
-	 *
 	 * Return the minimal HeapItem
-	 *
 	 */
-	public HeapItem findMin() { return this.min.getItem(); }
+	public HeapItem findMin() {
+		if (!this.empty()) { return this.min.getItem();}
+		return null;
+}
 
 	public void siftUp(HeapItem item){
 		HeapNode currNode = item.getNode();
@@ -158,14 +180,24 @@ public class BinomialHeap{
 
 	public void decreaseKey(HeapItem item, int diff)
 	{
+//		System.out.println("---------------------Entered decreaseKey--------------------");
+//		System.out.println("Key before decrease: " + item.getKey());
+//		System.out.println("Decreasing by: " + diff);
+//		System.out.println("Min before decrease: " + this.min.getItem());
 		// First, we update the key of item to the new key.
 		item.setKey(item.getKey() - diff);
 		// Second, we fix the tree by sifting up if needed.
+//		System.out.println("Heap before sifting");
+//		PrintHeap.printHeap(this, true);
 		this.siftUp(item);
+//		System.out.println("Heap after sifting");
+//		PrintHeap.printHeap(this, true);
 		// Last, we update the min if needed.
 		if (item.getKey() < this.getMin().getItem().getKey()){
 			this.setMin(item.getNode());
 		}
+//		System.out.println("Min after decrease: " + this.min.getItem());
+//		System.out.println("Key after decrease: " + item.getKey());
 	}
 
 	/**
@@ -175,11 +207,15 @@ public class BinomialHeap{
 	 */
 	public void delete(HeapItem item)
 	{
+		System.out.println("---------------------In Delete-------------------");
+		System.out.println("About to deltete: " + item.getKey());
+		System.out.println("Size before delete is:" + this.size);
 		// First, we decrease the key, so it becomes the minimum.
 		int diff = item.getKey() - this.getMin().getItem().getKey() + 1;
 		this.decreaseKey(item, diff);
 		// Then, we use deleteMin.
 		this.deleteMin();
+		System.out.println("|||||||||||  Size after delete is:" + this.size);
 	}
 
 	/**
@@ -189,13 +225,16 @@ public class BinomialHeap{
 	 */
 	public void meld(BinomialHeap heap2)
 	{
+		System.out.println("------------In meld-------");
+		if (heap2 == null){
+			return;
+		}
 		int thisHeapSize = this.size;
 		int heap2HeapSize= heap2.size();
-		System.out.println("------------------About to meld----------------");
-		System.out.println("This heap look like: \n ");
-		PrintHeap.printHeap(this, true);
-		System.out.println("Heap2 looks like: \n ");
-		PrintHeap.printHeap(heap2, true);
+//		System.out.println("This heap look like: \n ");
+//		PrintHeap.printHeap(this, true);
+//		System.out.println("Heap2 looks like: \n ");
+//		PrintHeap.printHeap(heap2, true);
 		if (!heap2.empty()){
 			if (this.empty()){ 					// if the heap is empty we replace it with heap2
 				this.setMin(heap2.getMin());
@@ -251,7 +290,7 @@ public class BinomialHeap{
 							this.setLast(heap1Pointer);
 						}
 
-						System.out.println("parent: " + heap1Pointer.getItem().getKey() + "\n child: " + heap1Pointer.getChild().getItem().getKey());
+//						System.out.println("parent: " + heap1Pointer.getItem().getKey() + "\n child: " + heap1Pointer.getChild().getItem().getKey());
 
 
 						heap2Pointer = heap2NextPointer;
@@ -350,6 +389,9 @@ public class BinomialHeap{
 			}
 		}
 		this.setSize(thisHeapSize + heap2HeapSize);
+		System.out.println("------------Finished meld-------");
+
+
 	}
 
 	public HeapNode compareHeapNodesAndLink(HeapNode heapNode1, HeapNode heapNode2 ){
@@ -365,8 +407,8 @@ public class BinomialHeap{
 	}
 
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
-		System.out.println("------------------in link-----------------");
-		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
+//		System.out.println("------------------in link-----------------");
+//		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
 		biggerHeapNode.setNext(biggerHeapNode);
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
@@ -375,7 +417,7 @@ public class BinomialHeap{
 		smallerHeapNode.setChild(biggerHeapNode);
 		biggerHeapNode.setParent(smallerHeapNode);
 		smallerHeapNode.setRank(1 + smallerHeapNode.getRank());
-		System.out.println("parent: " + biggerHeapNode.getParent().getItem().getKey() + " child " + smallerHeapNode.getChild().getNext().getItem().getKey());
+//		System.out.println("parent: " + biggerHeapNode.getParent().getItem().getKey() + " child " + smallerHeapNode.getChild().getNext().getItem().getKey());
 
 		return smallerHeapNode;
 	}
@@ -415,14 +457,21 @@ public class BinomialHeap{
 	}
 
 	public void findNewMin (){
+//		System.out.println("------------------In findNewMin----------------");
+//		PrintHeap.printHeap(this, true);
 		HeapNode last = this.last;
 		HeapNode pointer = last;
 		HeapNode newMin = last;
 		while (pointer.getNext() != last ){
+			pointer.setParent(null);
 			if (pointer.getItem().getKey() < newMin.getItem().getKey()){
 				newMin = pointer;
 			}
 			pointer = pointer.getNext();
+		}
+		pointer.setParent(null);
+		if (pointer.getItem().getKey() < newMin.getItem().getKey()){
+			newMin = pointer;
 		}
 		this.setMin(newMin);
 	}
