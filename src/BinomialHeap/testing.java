@@ -71,10 +71,13 @@ public class testing {
         heap.insert(2405, "aa");
         heap.insert(1871, "aa");
         heap.insert(2464, "aa");
+
         PrintHeap.printHeap(heap, true);
         heap.decreaseKey(item839, 193);
         PrintHeap.printHeap(heap, true);
         heap.delete(item839);
+        PrintHeap.printHeap(heap, true);
+
 
         BinomialHeap heaps = new BinomialHeap();
         System.out.println("000000000000000000000000000000000 heaps 00000000000000000000000000000000");
@@ -84,7 +87,7 @@ public class testing {
         heaps.insert(2464, "aa");
         PrintHeap.printHeap(heaps, true);
 
-        HeapGraph.draw(heaps);
+        //HeapGraph.draw(heaps);
 
         System.out.println("00000000000111111111111111111111 heapa 0000000000000111111111111111111111111");
         BinomialHeap heapa = new BinomialHeap();
@@ -97,6 +100,7 @@ public class testing {
         heapa.insert(4209, "aa");
         PrintHeap.printHeap(heapa, true);
         HeapGraph.draw(heapa);
+
 
 
 

@@ -362,6 +362,7 @@ public class BinomialHeap {
 					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
 						// we can't link this tree of heap 2, so we need to connect it before this tree of this heap
 						heap1Prev.setNext(heap2Pointer);
+						heap1Prev = heap1Prev.getNext();
 						heap2Pointer.setNext(heap1Pointer);
 						heap2Pointer = heap2NextPointer;
 
