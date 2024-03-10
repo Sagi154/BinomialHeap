@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import BinomialHeap.BinomialHeap.HeapItem;
+
 
 public class testing {
 
@@ -54,32 +56,60 @@ public class testing {
         return heap;
     }
 
-    public static void testInsert(int nodesCount){
-        Random random = new Random();
+    public static BinomialHeap testInsert(){
         System.out.println("---------Testing insert-----------");
         BinomialHeap heap = new BinomialHeap();
+        HeapItem item839 = heap.insert(839, "aa");
+        heap.insert(4209, "aa");
+        heap.insert(1743, "aa");
+        heap.insert(2424, "aa");
+        heap.insert(1190, "aa");
+        heap.insert(1647, "aa");
+        heap.insert(3647, "aa");
+        heap.insert(3830, "aa");
+        heap.insert(647, "aa");
+        heap.insert(2405, "aa");
+        heap.insert(1871, "aa");
+        heap.insert(2464, "aa");
         PrintHeap.printHeap(heap, true);
-        int key;
-//        for (int i = 0; i < nodesCount; i++){
-//            key = random.nextInt(nodesCount);
-//            heap.insert(key, "aa");
-//            System.out.println("----------heap after insert: -------------------");
-//            PrintHeap.printHeap(heap, true);
-//        }
-        heap.insert(0, "aa");
-        heap.insert(2, "aa");
-        heap.insert(8, "aa");
-        heap.insert(0, "aa");
+        heap.decreaseKey(item839, 193);
         PrintHeap.printHeap(heap, true);
-        heap.insert(3, "aa");
+        heap.delete(item839);
+
+        BinomialHeap heaps = new BinomialHeap();
+        System.out.println("000000000000000000000000000000000 heaps 00000000000000000000000000000000");
+        heaps.insert(647, "aa");
+        heaps.insert(2405, "aa");
+        heaps.insert(1871, "aa");
+        heaps.insert(2464, "aa");
+        PrintHeap.printHeap(heaps, true);
+
+        HeapGraph.draw(heaps);
+
+        System.out.println("00000000000111111111111111111111 heapa 0000000000000111111111111111111111111");
+        BinomialHeap heapa = new BinomialHeap();
+        heapa.insert(1190, "aa");
+        heapa.insert(1647, "aa");
+        heapa.insert(3647, "aa");
+        heapa.insert(3830, "aa");
+        heapa.insert(1743, "aa");
+        heapa.insert(2424, "aa");
+        heapa.insert(4209, "aa");
+        PrintHeap.printHeap(heapa, true);
+        HeapGraph.draw(heapa);
 
 
-        PrintHeap.printHeap(heap, true);
+
+
+        return heap;
     }
     public static void main (String[] args){
 //        testInsert(9);
-        BinomialHeap heap = insertFrom1ToCount(10);
-        PrintHeap.printHeap(heap, true);
+//        BinomialHeap heap = insertRandomOrder1ToCount(20);
+        BinomialHeap heap = testInsert();
+//        PrintHeap.printHeap(heap, true);
+        HeapGraph.draw(heap);
+//        PrintHeap.printHeap(heap, true);
     }
 
 }

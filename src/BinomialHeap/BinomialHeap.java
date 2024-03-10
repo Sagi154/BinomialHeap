@@ -81,6 +81,8 @@ public class BinomialHeap {
 		node.setChild(null);
 		BinomialHeap newHeap = new BinomialHeap(size, last);
 		newHeap.findNewMin();
+		System.out.println("Heap created from node: " + node.getItem());
+		PrintHeap.printHeap(newHeap, true);
 		return newHeap;
 	}
 
@@ -226,6 +228,10 @@ public class BinomialHeap {
 	public void meld(BinomialHeap heap2)
 	{
 		System.out.println("------------In meld-------");
+		System.out.println("This heap is:");
+		PrintHeap.printHeap(this, true);
+		System.out.println("Heap2 is:");
+		PrintHeap.printHeap(heap2, true);
 		if (heap2 == null){
 			return;
 		}
@@ -390,6 +396,8 @@ public class BinomialHeap {
 		}
 		this.setSize(thisHeapSize + heap2HeapSize);
 		System.out.println("------------Finished meld-------");
+		System.out.println("This heap after meld is:");
+		PrintHeap.printHeap(this, true);
 
 
 	}
