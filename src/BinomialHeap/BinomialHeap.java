@@ -1,4 +1,5 @@
 package BinomialHeap;
+//package binomialheaptester.yourcode;
 
 /**
  * BinomialHeap
@@ -74,15 +75,16 @@ public class BinomialHeap {
 		return item;
 	}
 
-	public BinomialHeap createHeapFromNodeChildren(HeapNode node) {
+	public static BinomialHeap createHeapFromNodeChildren(HeapNode node) {
 		int rank = node.getRank();
 		int size = (int) Math.pow(2, rank) - 1;
 		HeapNode last = node.getChild();
 		node.setChild(null);
 		BinomialHeap newHeap = new BinomialHeap(size, last);
+		if (newHeap.empty()){
+			return newHeap;
+		}
 		newHeap.findNewMin();
-		System.out.println("Heap created from node: " + node.getItem());
-		PrintHeap.printHeap(newHeap, true);
 		return newHeap;
 	}
 
@@ -133,10 +135,7 @@ public class BinomialHeap {
 		// First, we disconnect the deleted node from the heap.
 		this.disconnectNodeFromHeap(deletedMin);
 		// Second, we create a new heap from the deleted node's children.
-		BinomialHeap heap2 = null;
-		if (deletedMin.getRank() != 0 ) {
-			heap2 = this.createHeapFromNodeChildren(deletedMin);
-		}
+		BinomialHeap heap2 = createHeapFromNodeChildren(deletedMin);
 		// Finally, we meld the 2 heaps together.
 		this.meld(heap2);
 		System.out.println("adsfasfdasf delete min asdfasdfsdasf");
