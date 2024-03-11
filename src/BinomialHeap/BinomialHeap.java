@@ -373,6 +373,10 @@ public class BinomialHeap {
 							}
 							counter++;
 						}
+						if (this.getLast().getRank() < heap1Pointer.getRank()){
+							// update the last's pointer in this heap if it changed
+							this.setLast(heap1Pointer);
+						}
 					}
 
 					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
