@@ -233,8 +233,8 @@ public class BinomialHeap {
 	 */
 	public void meld(BinomialHeap heap2)
 	{
-		int thisNumOfTrees = this.numOfTrees;
-		this.numOfTrees += heap2.numOfTrees;
+//		int thisNumOfTrees = this.numOfTrees;
+//		this.numOfTrees += heap2.numOfTrees;
 		System.out.println("------------In meld-------");
 		System.out.println("This heap is:");
 		PrintHeap.printHeap(this, true);
@@ -272,7 +272,7 @@ public class BinomialHeap {
 				HeapNode heap1First = heap1Prev.getNext();
 				HeapNode heap1Pointer = heap1First;
 
-				int heap1StartingNumOfTrees = this.calNumTrees();
+				int heap1StartingNumOfTrees = this.numTrees();
 //				int heap1StartingNumOfTrees = thisNumOfTrees;
 
 				int counter = 0;
@@ -312,6 +312,10 @@ public class BinomialHeap {
 							this.setLast(heap1Pointer);
 						}
 
+						if(heap1First == heap1Pointer.getChild()){
+							heap1First = heap1Pointer;
+						}
+
 //						System.out.println("parent: " + heap1Pointer.getItem().getKey() + "\n child: " + heap1Pointer.getChild().getItem().getKey());
 
 
@@ -343,6 +347,7 @@ public class BinomialHeap {
 							}
 
 
+
 							//if (heap1Pointer.getNext() == heap1Pointer.getChild()){
 							// 2 optional cases:
 							// 1. heap1Pointer hasn't changed: we need to update his next (is former one is now his child)
@@ -372,10 +377,6 @@ public class BinomialHeap {
 								this.setLast(heap1Pointer);
 							}
 							counter++;
-						}
-						if (this.getLast().getRank() < heap1Pointer.getRank()){
-							// update the last's pointer in this heap if it changed
-							this.setLast(heap1Pointer);
 						}
 					}
 
@@ -480,12 +481,12 @@ public class BinomialHeap {
 	 * Return the number of trees in the heap.
 	 *
 	 */
-	public int numTrees()
+	public int numTrees2()
 	{
 		return numOfTrees;
 	}
 
-	public int calNumTrees()
+	public int numTrees()
 	{
 		HeapNode currTree = this.last;
 		int lastRank = this.last.getRank();
