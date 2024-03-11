@@ -167,18 +167,20 @@ public class testing {
 
         System.out.println("000000000000000000000000000000000 heap1 00000000000000000000000000000000");
         PrintHeap.printHeap(heap1, true);
-        HeapGraph.draw(heap1);
+//        HeapGraph.draw(heap1);
         System.out.println("000000000000000000000000000000000 heap2 00000000000000000000000000000000");
         PrintHeap.printHeap(heap2, true);
-        HeapGraph.draw(heap2);
-//        heap1.meld(heap2);
+//        HeapGraph.draw(heap2);
+        heap1.meld(heap2);
     }
 
     public static void testNumOfTrees(){
 
-        int size1 = 121;
+        int treesNum1 = 5;
+        int size1 = (int)Math.pow(2, treesNum1) - 1;
         BinomialHeap heap = insertRandomOrderRandomKeys(size1, size1 * 10);
-        int size2 = 57;
+        int treesNum2 = 3;
+        int size2 = (int)Math.pow(2, treesNum2) - 1;
         BinomialHeap heap2 = insertRandomOrderRandomKeys(size2, size2 * 10);
         System.out.println("---------- Heap in test number of trees ---------");
         PrintHeap.printHeap(heap, true);
@@ -194,8 +196,8 @@ public class testing {
         System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
     }
     public static void main (String[] args){
-        testNumOfTrees();
-//        testMeldSpecialCase();
+//        testNumOfTrees();
+        testMeldSpecialCase();
     }
 
 }
