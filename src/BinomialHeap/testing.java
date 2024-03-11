@@ -155,15 +155,21 @@ public class testing {
 
     public static void testMeldSpecialCase(){
         BinomialHeap heap1 = new BinomialHeap();
-        heap1.insert(335, "aa");
+        heap1.insert(306, "aa");
+        heap1.insert(2042, "aa");
+        heap1.insert(596, "aa");
         PrintHeap.printHeap(heap1, true);
 
         BinomialHeap heap2 = new BinomialHeap();
-        heap2.insert(2, "aa");
-        heap2.insert(14, "aa");
-        heap2.insert(193, "aa");
-        heap2.insert(368, "aa");
-        heap2.insert(328, "aa");
+        heap2.insert(41, "aa");
+        heap2.insert(3143, "aa");
+        heap2.insert(146, "aa");
+        heap2.insert(1195, "aa");
+        heap2.insert(51, "aa");
+        heap2.insert(623, "aa");
+        heap2.insert(277, "aa");
+        heap2.insert(2773, "aa");
+        heap2.insert(1529, "aa");
 
         System.out.println("000000000000000000000000000000000 heap1 00000000000000000000000000000000");
         PrintHeap.printHeap(heap1, true);
@@ -173,9 +179,9 @@ public class testing {
 //        HeapGraph.draw(heap2);
         heap1.meld(heap2);
         ///HeapGraph.draw(heap2);
-        heap1.meld(heap2);
-       // HeapGraph.draw(heap1);
     }
+
+
 
     public static void testNumOfTrees(){
 
@@ -187,16 +193,16 @@ public class testing {
         BinomialHeap heap2 = insertRandomOrderRandomKeys(size2, size2 * 10);
         System.out.println("---------- Heap in test number of trees ---------");
         PrintHeap.printHeap(heap, true);
-        HeapGraph.draw(heap);
+//        HeapGraph.draw(heap);
 
         System.out.println("---------- Heap2 in test number of trees ---------");
-        PrintHeap.printHeap(heap2, true);
+//        PrintHeap.printHeap(heap2, true);
 //        HeapGraph.draw(heap2);
 
-        System.out.println("Number of trees in heap1 is: \n" + heap.numOfTrees);
-        System.out.println("Number of trees in heap2 is: \n" + heap2.numOfTrees);
+//        System.out.println("Number of trees in heap1 is: \n" + heap.numOfTrees);
+//        System.out.println("Number of trees in heap2 is: \n" + heap2.numOfTrees);
         heap.meld(heap2);
-        System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
+//        System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
     }
     public static void main (String[] args){
         //testNumOfTrees();
