@@ -236,10 +236,10 @@ public class BinomialHeap {
 //		int thisNumOfTrees = this.numOfTrees;
 //		this.numOfTrees += heap2.numOfTrees;
 		System.out.println("------------In meld-------");
-		System.out.println("This heap is:");
-		PrintHeap.printHeap(this, true);
-		System.out.println("Heap2 is:");
-		PrintHeap.printHeap(heap2, true);
+		//System.out.println("This heap is:");
+		//PrintHeap.printHeap(this, true);
+		//System.out.println("Heap2 is:");
+		//PrintHeap.printHeap(heap2, true);
 		if (heap2 == null){
 			return;
 		}
@@ -346,36 +346,15 @@ public class BinomialHeap {
 								heap1Pointer.setNext(heap1_future_next_pointer);
 							}
 
-
-
-							//if (heap1Pointer.getNext() == heap1Pointer.getChild()){
-							// 2 optional cases:
-							// 1. heap1Pointer hasn't changed: we need to update his next (is former one is now his child)
-							// 2. heap1Pointer has been changed, but we had only 2 trees in this heap before we linked them
-							//	if (heap1_future_next_pointer != heap1Pointer.getChild()){
-							// there were more than 2 trees before the linking: we are in case 1
-							//		heap1Pointer.setNext(heap1_future_next_pointer);
-							//	}
-							//	else {
-							// there were only 2 trees before the linking
-							//		heap1Pointer.setNext(heap1Pointer);
-							//	}
-
-							//	}
-							//	else{
-							//		heap1Pointer.setNext(heap1_future_next_pointer);
-							//	}
-
-							//if (heap1Prev.getNext() == heap1Pointer.getChild()){
-							// heap1Pointer has been changed, and now we need to update heap1Prev's
-							// next (former heap1Pointer is now a child )
-							//		heap1Prev.setNext(heap1Pointer);
-							//	}
-
 							if (this.getLast().getRank() < heap1Pointer.getRank()){
 								// update the last's pointer in this heap if it changed
 								this.setLast(heap1Pointer);
 							}
+
+							if(heap1First == heap1Pointer.getChild()){
+								heap1First = heap1Pointer;
+							}
+
 							counter++;
 						}
 					}
@@ -423,8 +402,8 @@ public class BinomialHeap {
 		}
 		this.setSize(thisHeapSize + heap2HeapSize);
 		System.out.println("------------Finished meld-------");
-		System.out.println("This heap after meld is:");
-		PrintHeap.printHeap(this, true);
+		//System.out.println("This heap after meld is:");
+		//PrintHeap.printHeap(this, true);
 
 
 	}
