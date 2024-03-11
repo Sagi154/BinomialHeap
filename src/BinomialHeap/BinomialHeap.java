@@ -366,7 +366,12 @@ public class BinomialHeap {
 						heap2Pointer.setNext(heap1Pointer);
 						heap2Pointer = heap2NextPointer;
 
-						if (heap2Pointer != null){
+						if(heap1First.getRank() > heap1Prev.getRank()){
+							heap1First = heap1Prev;
+						}
+
+
+							if (heap2Pointer != null){
 							// check if we finished to meld
 							heap2Last.setNext(heap2NextPointer);
 						}
