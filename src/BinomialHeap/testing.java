@@ -170,8 +170,11 @@ public class testing {
         HeapGraph.draw(heap1);
         System.out.println("000000000000000000000000000000000 heap2 00000000000000000000000000000000");
         PrintHeap.printHeap(heap2, true);
-        HeapGraph.draw(heap2);
-//        heap1.meld(heap2);
+        ///HeapGraph.draw(heap2);
+        heap1.meld(heap2);
+       // HeapGraph.draw(heap1);
+
+
     }
 
     public static void testNumOfTrees(){
@@ -194,8 +197,8 @@ public class testing {
         System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
     }
     public static void main (String[] args){
-        testNumOfTrees();
-//        testMeldSpecialCase();
+        //testNumOfTrees();
+        testMeldSpecialCase();
     }
 
 }
