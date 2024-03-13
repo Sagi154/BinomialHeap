@@ -68,16 +68,16 @@ public class BinomialHeap {
 	 * Insert (key,info) into the heap and return the newly generated HeapItem.
 	 */
 	public HeapItem insert(int key, String info) {
-		System.out.println("------------------------In insert-------------------");
+//		System.out.println("------------------------In insert-------------------");
 		HeapItem item = this.makeNewItem(key, info);
-		System.out.println("About to insert: " + item);
+//		System.out.println("About to insert: " + item);
 //		System.out.println("------------------About to insert:" + item + "---------------------");
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
 //		System.out.println("last is:" + heap2.getLast().getItem());
 //		System.out.println("min is:" + heap2.getMin().getItem());
-		System.out.println("Size before insert is:" + this.size);
+//		System.out.println("Size before insert is:" + this.size);
 		this.meld(heap2);
-		System.out.println("Size after insert is:" + this.size);
+//		System.out.println("Size after insert is:" + this.size);
 		// Added a tree of rank 0 to the heap.
 		return item;
 	}
@@ -129,9 +129,9 @@ public class BinomialHeap {
 	 * Delete the minimal item
 	 */
 	public void deleteMin() {
-		System.out.println("-------------------------Entered deleteMin-------------------");
-		System.out.println("Min is: " + this.min.getItem());
-		System.out.println("Size before deleteMin is:" + this.size);
+//		System.out.println("-------------------------Entered deleteMin-------------------");
+//		System.out.println("Min is: " + this.min.getItem());
+//		System.out.println("Size before deleteMin is:" + this.size);
 		if (this.size <= 1) {
 			this.min = null;
 			this.last = null;
@@ -145,8 +145,8 @@ public class BinomialHeap {
 		BinomialHeap heap2 = createHeapFromNodeChildren(deletedMin);
 		// Finally, we meld the 2 heaps together.
 		this.meld(heap2);
-		System.out.println("Size after deleteMin is:" + this.size);
-		System.out.println("New min is:" + getMin().getItem());
+//		System.out.println("Size after deleteMin is:" + this.size);
+//		System.out.println("New min is:" + getMin().getItem());
 
 	}
 
@@ -215,15 +215,15 @@ public class BinomialHeap {
 	 */
 	public void delete(HeapItem item)
 	{
-		System.out.println("---------------------In Delete-------------------");
-		System.out.println("About to deltete: " + item.getKey());
-		System.out.println("Size before delete is:" + this.size);
+//		System.out.println("---------------------In Delete-------------------");
+//		System.out.println("About to deltete: " + item.getKey());
+//		System.out.println("Size before delete is:" + this.size);
 		// First, we decrease the key, so it becomes the minimum.
 		int diff = item.getKey() - this.getMin().getItem().getKey() + 1;
 		this.decreaseKey(item, diff);
 		// Then, we use deleteMin.
 		this.deleteMin();
-		System.out.println("|||||||||||  Size after delete is:" + this.size);
+//		System.out.println("|||||||||||  Size after delete is:" + this.size);
 	}
 
 	/**
@@ -235,20 +235,11 @@ public class BinomialHeap {
 	{
 //		int thisNumOfTrees = this.numOfTrees;
 //		this.numOfTrees += heap2.numOfTrees;
-		System.out.println("------------In meld-------");
-		//System.out.println("This heap is:");
-		//PrintHeap.printHeap(this, true);
-		//System.out.println("Heap2 is:");
-		//PrintHeap.printHeap(heap2, true);
 		if (heap2 == null){
 			return;
 		}
 		int thisHeapSize = this.size;
 		int heap2HeapSize= heap2.size();
-//		System.out.println("This heap look like: \n ");
-//		PrintHeap.printHeap(this, true);
-//		System.out.println("Heap2 looks like: \n ");
-//		PrintHeap.printHeap(heap2, true);
 		if (!heap2.empty()){
 			// Checking case where heap2 isn't empty
 			if (this.empty()){
@@ -401,11 +392,6 @@ public class BinomialHeap {
 			}
 		}
 		this.setSize(thisHeapSize + heap2HeapSize);
-		System.out.println("------------Finished meld-------");
-		//System.out.println("This heap after meld is:");
-		//PrintHeap.printHeap(this, true);
-
-
 	}
 
 	public HeapNode compareHeapNodesAndLink(HeapNode heapNode1, HeapNode heapNode2 ){
