@@ -13,10 +13,78 @@ public class testing {
     public static void FirstTheoreticalTest (){
         int nodesCount;
         BinomialHeap heap;
+        System.out.println("-------------First Theoretical test results----------------");
         for ( int i = 1; i <= 6; i++)
         {
+            System.out.println("      --------- i = "+ i + " -------       " );
             nodesCount = (int)Math.pow(3, i+5) - 1;
+            long start = System.currentTimeMillis();
+            System.out.println("Time before is : "+ start);
             heap = insertFrom1ToCount(nodesCount);
+            System.out.println("Time after is : "+ System.currentTimeMillis());
+            long elapsedTimeMillis = System.currentTimeMillis()-start;
+            System.out.println("Total runtime: " + elapsedTimeMillis);
+            System.out.println("Total links: " + heap.countLinks);
+            System.out.println("Number of trees in the end: " + heap.numOfTrees);
+//            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
+        }
+    }
+
+    public static void secondTheoreticalTest (){
+        int nodesCount;
+        BinomialHeap heap;
+        System.out.println("-------------Second Theoretical test results----------------");
+        for ( int i = 1; i <= 6; i++)
+        {
+            System.out.println("      --------- i = "+ i + " -------       " );
+            nodesCount = (int)Math.pow(3, i+5) - 1;
+            long start = System.currentTimeMillis();
+            System.out.println("Time before is : "+ start);
+            heap = insertRandomOrder1ToCount(nodesCount);
+            deleteMinNTimes(heap, nodesCount / 2 );
+            System.out.println("Time after is : "+ System.currentTimeMillis());
+            long elapsedTimeMillis = System.currentTimeMillis()-start;
+            System.out.println("Total runtime: " + elapsedTimeMillis);
+            System.out.println("Total links: " + heap.countLinks);
+            System.out.println("Number of trees in the end: " + heap.numOfTrees);
+            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
+        }
+    }
+
+    public static void thirdTheoreticalTest (){
+        int nodesCount;
+        BinomialHeap heap;
+        System.out.println("-------------Third Theoretical test results----------------");
+        for ( int i = 1; i <= 6; i++)
+        {
+            System.out.println("      --------- i = "+ i + " -------       " );
+            nodesCount = (int)Math.pow(3, i+5) - 1;
+            int deletesCount = nodesCount - (int)(Math.pow(2, 5) - 1);
+            long start = System.currentTimeMillis();
+            System.out.println("Time before is : "+ start);
+
+            heap = insertFromCountTo1(nodesCount);
+            deleteMinNTimes(heap, deletesCount);
+            System.out.println("Time after is : "+ System.currentTimeMillis());
+
+            long elapsedTimeMillis = System.currentTimeMillis()-start;
+            System.out.println("Total runtime: " + elapsedTimeMillis);
+            System.out.println("Total links: " + heap.countLinks);
+            System.out.println("Number of trees in the end: " + heap.numOfTrees);
+            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
+            System.out.println("For testing, size is: " + heap.size);
+        }
+    }
+
+    public static void runTests(){
+        FirstTheoreticalTest();
+        secondTheoreticalTest();
+        thirdTheoreticalTest();
+    }
+
+    public static void deleteMinNTimes (BinomialHeap heap, int deleteCount){
+        for (int i = 1 ; i <= deleteCount ; i++) {
+            heap.deleteMin();
         }
     }
 
@@ -193,20 +261,23 @@ public class testing {
         BinomialHeap heap2 = insertRandomOrderRandomKeys(size2, size2 * 10);
         System.out.println("---------- Heap in test number of trees ---------");
         PrintHeap.printHeap(heap, true);
-//        HeapGraph.draw(heap);
+
+
+        HeapGraph.draw(heap);
 
         System.out.println("---------- Heap2 in test number of trees ---------");
-//        PrintHeap.printHeap(heap2, true);
-//        HeapGraph.draw(heap2);
+        PrintHeap.printHeap(heap2, true);
+        HeapGraph.draw(heap2);
 
-//        System.out.println("Number of trees in heap1 is: \n" + heap.numOfTrees);
-//        System.out.println("Number of trees in heap2 is: \n" + heap2.numOfTrees);
-        heap.meld(heap2);
-//        System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
+        System.out.println("Number of trees in heap1 is: \n" + heap.numOfTrees);
+        System.out.println("Number of trees in heap2 is: \n" + heap2.numOfTrees);
+//        heap.meld(heap2);
+        System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
     }
     public static void main (String[] args){
-        //testNumOfTrees();
-        testMeldSpecialCase();
+//        testNumOfTrees();
+//        testMeldSpecialCase();
+        runTests();
     }
 
 }
