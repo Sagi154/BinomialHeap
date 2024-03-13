@@ -10,76 +10,109 @@ import BinomialHeap.BinomialHeap.HeapItem;
 
 public class testing {
 
-    public static void FirstTheoreticalTest (){
+    public static void FirstTheoreticalTest (int testCount){
         int nodesCount;
         BinomialHeap heap;
         System.out.println("-------------First Theoretical test results----------------");
+        long sumOfElapsedTime = 0;
+        int sumOfCountLinks = 0;
+        int sumOfNumOfTrees = 0;
         for ( int i = 1; i <= 6; i++)
         {
             System.out.println("      --------- i = "+ i + " -------       " );
             nodesCount = (int)Math.pow(3, i+5) - 1;
-            long start = System.currentTimeMillis();
-            System.out.println("Time before is : "+ start);
-            heap = insertFrom1ToCount(nodesCount);
-            System.out.println("Time after is : "+ System.currentTimeMillis());
-            long elapsedTimeMillis = System.currentTimeMillis()-start;
-            System.out.println("Total runtime: " + elapsedTimeMillis);
-            System.out.println("Total links: " + heap.countLinks);
-            System.out.println("Number of trees in the end: " + heap.numOfTrees);
-//            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
+            for (int j = 1; j <= testCount; j++){
+                long start = System.currentTimeMillis();
+                heap = insertFrom1ToCount(nodesCount);
+                long elapsedTimeMillis = System.currentTimeMillis()-start;
+                sumOfElapsedTime += elapsedTimeMillis;
+                sumOfCountLinks += heap.countLinks;
+                sumOfNumOfTrees += heap.numOfTrees;
+            }
+            System.out.println("Total runtime: " + (sumOfElapsedTime/testCount));
+            System.out.println("Total links: " + (sumOfCountLinks/testCount));
+            System.out.println("Number of trees in the end: " + (sumOfNumOfTrees/testCount));
+            sumOfElapsedTime = 0;
+            sumOfCountLinks = 0;
+            sumOfNumOfTrees = 0;
         }
     }
 
-    public static void secondTheoreticalTest (){
+    public static void secondTheoreticalTest (int testCount){
         int nodesCount;
-        BinomialHeap heap;
         System.out.println("-------------Second Theoretical test results----------------");
+        long sumOfElapsedTime = 0;
+        int sumOfCountLinks = 0;
+        int sumOfNumOfTrees = 0;
+        int sumOfSumOfRanks = 0;
         for ( int i = 1; i <= 6; i++)
         {
+
             System.out.println("      --------- i = "+ i + " -------       " );
             nodesCount = (int)Math.pow(3, i+5) - 1;
-            long start = System.currentTimeMillis();
-            System.out.println("Time before is : "+ start);
-            heap = insertRandomOrder1ToCount(nodesCount);
-            deleteMinNTimes(heap, nodesCount / 2 );
-            System.out.println("Time after is : "+ System.currentTimeMillis());
-            long elapsedTimeMillis = System.currentTimeMillis()-start;
-            System.out.println("Total runtime: " + elapsedTimeMillis);
-            System.out.println("Total links: " + heap.countLinks);
-            System.out.println("Number of trees in the end: " + heap.numOfTrees);
-            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
+
+            for (int j = 1; j <= testCount; j++){
+                long start = System.currentTimeMillis();
+                BinomialHeap heap = insertRandomOrder1ToCount(nodesCount);
+                deleteMinNTimes(heap, nodesCount / 2 );
+                long elapsedTimeMillis = System.currentTimeMillis()-start;
+                sumOfElapsedTime += elapsedTimeMillis;
+                sumOfCountLinks += heap.countLinks;
+                sumOfNumOfTrees += heap.numOfTrees;
+                sumOfSumOfRanks += heap.sumOfRanks;
+            }
+            System.out.println("Total runtime: " + (sumOfElapsedTime/testCount));
+            System.out.println("Total links: " + (sumOfCountLinks/testCount));
+            System.out.println("Number of trees in the end: " + (sumOfNumOfTrees/testCount));
+            System.out.println("Sum of deleted nodes' rank: " + (sumOfSumOfRanks/testCount));
+            sumOfElapsedTime = 0;
+            sumOfCountLinks = 0;
+            sumOfNumOfTrees = 0;
+            sumOfSumOfRanks = 0;
         }
     }
 
-    public static void thirdTheoreticalTest (){
+    public static void thirdTheoreticalTest (int testCount){
         int nodesCount;
         BinomialHeap heap;
+        long sumOfElapsedTime = 0;
+        int sumOfCountLinks = 0;
+        int sumOfNumOfTrees = 0;
+        int sumOfSumOfRanks = 0;
         System.out.println("-------------Third Theoretical test results----------------");
         for ( int i = 1; i <= 6; i++)
         {
             System.out.println("      --------- i = "+ i + " -------       " );
             nodesCount = (int)Math.pow(3, i+5) - 1;
             int deletesCount = nodesCount - (int)(Math.pow(2, 5) - 1);
-            long start = System.currentTimeMillis();
-            System.out.println("Time before is : "+ start);
 
-            heap = insertFromCountTo1(nodesCount);
-            deleteMinNTimes(heap, deletesCount);
-            System.out.println("Time after is : "+ System.currentTimeMillis());
 
-            long elapsedTimeMillis = System.currentTimeMillis()-start;
-            System.out.println("Total runtime: " + elapsedTimeMillis);
-            System.out.println("Total links: " + heap.countLinks);
-            System.out.println("Number of trees in the end: " + heap.numOfTrees);
-            System.out.println("Sum of deleted nodes' rank: " + heap.sumOfRanks);
-            System.out.println("For testing, size is: " + heap.size);
+            for (int j = 1; j <= testCount; j++){
+                long start = System.currentTimeMillis();
+                heap = insertFromCountTo1(nodesCount);
+                deleteMinNTimes(heap, deletesCount);
+                long elapsedTimeMillis = System.currentTimeMillis()-start;
+                sumOfElapsedTime += elapsedTimeMillis;
+                sumOfCountLinks += heap.countLinks;
+                sumOfNumOfTrees += heap.numOfTrees;
+                sumOfSumOfRanks += heap.sumOfRanks;
+            }
+            System.out.println("Total runtime: " + (sumOfElapsedTime/testCount));
+            System.out.println("Total links: " + (sumOfCountLinks/testCount));
+            System.out.println("Number of trees in the end: " + (sumOfNumOfTrees/testCount));
+            System.out.println("Sum of deleted nodes' rank: " + (sumOfSumOfRanks/testCount));
+            sumOfElapsedTime = 0;
+            sumOfCountLinks = 0;
+            sumOfNumOfTrees = 0;
+            sumOfSumOfRanks = 0;
         }
     }
 
     public static void runTests(){
-        FirstTheoreticalTest();
-        secondTheoreticalTest();
-        thirdTheoreticalTest();
+        int testCount = 10;
+        FirstTheoreticalTest(testCount);
+        secondTheoreticalTest(testCount);
+        thirdTheoreticalTest(testCount);
     }
 
     public static void deleteMinNTimes (BinomialHeap heap, int deleteCount){
