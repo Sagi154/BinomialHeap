@@ -1,5 +1,4 @@
 package BinomialHeap;
-//package binomialheaptester.yourcode;
 
 /*
 username - sagihe
@@ -22,10 +21,6 @@ public class BinomialHeap {
 	public HeapNode min;
 
 	public int numOfTrees = 0;
-
-	public int countLinks = 0;
-
-	public int sumOfRanks = 0;
 
 	public BinomialHeap() {
 	}
