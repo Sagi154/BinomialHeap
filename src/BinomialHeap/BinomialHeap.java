@@ -341,8 +341,8 @@ public class BinomialHeap {
 						}
 					}
 					else {
-						// we can't link this tree of heap 2 to this tree of this heap, so we need to check with a bigger
-						// rank tree in this heap
+						// this tree of heap2 has bigger rank of this heap tree so, we can't link them.
+						// we need to check with a bigger rank tree in this heap
 						heap1Prev = heap1Pointer;
 						heap1Pointer = heap1Pointer.getNext();
 						counter++;
@@ -369,9 +369,9 @@ public class BinomialHeap {
 
 	/**
 	 *
-	 * @param heapNode1
-	 * @param heapNode2
-	 * @return
+	 * @param heapNode1 - the root of the tree in this heap we want to link
+	 * @param heapNode2 - the root of the tree in heap 2 we want to link
+	 * @return - a pointer to the root of the tree created after the linking
 	 */
 	public HeapNode compareHeapNodesAndLink(HeapNode heapNode1, HeapNode heapNode2 ){
 		if (heapNode1.getItem().getKey() < heapNode2.getItem().getKey()){
@@ -387,9 +387,9 @@ public class BinomialHeap {
 
 	/**
 	 *
-	 * @param biggerHeapNode
-	 * @param smallerHeapNode
-	 * @return
+	 * @param biggerHeapNode - the root with the bigger value from the trees we want to link
+	 * @param smallerHeapNode - the root with the smaller value from the trees we want to link
+	 * @return - a pointer to the root of the tree created after the linking
 	 */
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
 		biggerHeapNode.setNext(biggerHeapNode);
