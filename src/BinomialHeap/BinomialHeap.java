@@ -1,6 +1,14 @@
 package BinomialHeap;
 //package binomialheaptester.yourcode;
 
+/*
+username - sagihe
+id1      - 207190406
+name1    - Sagi Eisenberg
+id2      - 318674355
+name2    - Ido Zacharia
+ */
+
 /**
  * BinomialHeap
  *
@@ -20,11 +28,9 @@ public class BinomialHeap {
 	public int sumOfRanks = 0;
 
 	public BinomialHeap() {
-//		System.out.println("Constructor empty used");
 	}
 
 	public BinomialHeap(int size, HeapNode last) {
-//		System.out.println("Constructor size-last used");
 		this.size = size;
 		this.last = last;
 		if (size > 0 && last != null)
@@ -32,7 +38,6 @@ public class BinomialHeap {
 	}
 
 	public BinomialHeap(HeapNode last, HeapNode min) {
-//		System.out.println("Constructor last-min used");
 		this.last = last;
 		this.min = min;
 		if (last != null && min != null) {
@@ -61,10 +66,15 @@ public class BinomialHeap {
 		this.min = newMin;
 	}
 
+	/**
+	 * Creates a new HeapItem with the given key and info.
+	 * @param key The key of this item.
+	 * @param info The info of this item.
+	 * @return The created HeapItem.
+	 */
 	public HeapItem makeNewItem(int key, String info) {
 		HeapItem item = new HeapItem(key, info);
 		HeapNode node = new HeapNode(item);
-//		node.setItem(item);
 		item.setNode(node);
 		return item;
 	}
@@ -75,20 +85,18 @@ public class BinomialHeap {
 	 * Insert (key,info) into the heap and return the newly generated HeapItem.
 	 */
 	public HeapItem insert(int key, String info) {
-//		System.out.println("------------------------In insert-------------------");
 		HeapItem item = this.makeNewItem(key, info);
-//		System.out.println("About to insert: " + item);
-//		System.out.println("------------------About to insert:" + item + "---------------------");
 		BinomialHeap heap2 = new BinomialHeap(item.getNode(), item.getNode());
-//		System.out.println("last is:" + heap2.getLast().getItem());
-//		System.out.println("min is:" + heap2.getMin().getItem());
-//		System.out.println("Size before insert is:" + this.size);
 		this.meld(heap2);
-//		System.out.println("Size after insert is:" + this.size);
 		// Added a tree of rank 0 to the heap.
 		return item;
 	}
 
+	/**
+	 * Creates a new heap whose roots are the children of the given node.
+	 * @param node the root of all the roots of the heap we're about to create.
+	 * @return A new BinomialHeap.
+	 */
 	public static BinomialHeap createHeapFromNodeChildren(HeapNode node) {
 		int rank = node.getRank();
 		int size = (int) Math.pow(2, rank) - 1;
@@ -103,11 +111,13 @@ public class BinomialHeap {
 		return newHeap;
 	}
 
+	/**
+	 * Disconnects the node given from this heap by updating this heap size,
+	 * pointers of relevant nodes, also updates this heap last and min nodes.
+	 * This method is called when we wish to the delete the min of this heap.
+	 * @param node The node we wish to disconnect from the heap.
+	 */
 	public void disconnectNodeFromHeap(HeapNode node) {
-//		System.out.println("--------------------------------In disconnect---------------------------");
-//		System.out.println("About to disconnect: " + node.getItem());
-//		System.out.println("Size before disconnect is:" + this.size);
-		// handles case where node is the only node in heap
 		if (this.last.getNext().getRank() == this.last.getRank()) {
 			this.size = 0;
 			this.last = null;
@@ -132,7 +142,6 @@ public class BinomialHeap {
 		// Finally, we update the min of the heap and the number of trees.
 		this.findNewMin();
 		this.numOfTrees--;
-//		System.out.println("Size after disconnect is:" + this.size);
 	}
 
 	/**
@@ -140,9 +149,6 @@ public class BinomialHeap {
 	 */
 	public void deleteMin() {
 		this.sumOfRanks += this.min.getRank();
-//		System.out.println("-------------------------Entered deleteMin-------------------");
-//		System.out.println("Min is: " + this.min.getItem());
-//		System.out.println("Size before deleteMin is:" + this.size);
 		if (this.size <= 1) {
 			this.min = null;
 			this.last = null;
@@ -157,8 +163,6 @@ public class BinomialHeap {
 		BinomialHeap heap2 = createHeapFromNodeChildren(deletedMin);
 		// Finally, we meld the 2 heaps together.
 		this.meld(heap2);
-//		System.out.println("Size after deleteMin is:" + this.size);
-//		System.out.println("New min is:" + getMin().getItem());
 
 	}
 
@@ -170,6 +174,10 @@ public class BinomialHeap {
 		return null;
 	}
 
+	/**
+	 *
+	 * @param item
+	 */
 	public void siftUp(HeapItem item){
 		HeapNode currNode = item.getNode();
 		HeapNode parent = currNode.getParent();
@@ -200,24 +208,14 @@ public class BinomialHeap {
 
 	public void decreaseKey(HeapItem item, int diff)
 	{
-//		System.out.println("---------------------Entered decreaseKey--------------------");
-//		System.out.println("Key before decrease: " + item.getKey());
-//		System.out.println("Decreasing by: " + diff);
-//		System.out.println("Min before decrease: " + this.min.getItem());
 		// First, we update the key of item to the new key.
 		item.setKey(item.getKey() - diff);
 		// Second, we fix the tree by sifting up if needed.
-//		System.out.println("Heap before sifting");
-//		PrintHeap.printHeap(this, true);
 		this.siftUp(item);
-//		System.out.println("Heap after sifting");
-//		PrintHeap.printHeap(this, true);
 		// Last, we update the min if needed.
 		if (item.getKey() <= this.getMin().getItem().getKey()){
 			this.setMin(item.getNode());
 		}
-//		System.out.println("Min after decrease: " + this.min.getItem());
-//		System.out.println("Key after decrease: " + item.getKey());
 	}
 
 	/**
@@ -227,15 +225,11 @@ public class BinomialHeap {
 	 */
 	public void delete(HeapItem item)
 	{
-//		System.out.println("---------------------In Delete-------------------");
-//		System.out.println("About to deltete: " + item.getKey());
-//		System.out.println("Size before delete is:" + this.size);
 		// First, we decrease the key, so it becomes the minimum.
 		int diff = item.getKey() - this.getMin().getItem().getKey() + 1;
 		this.decreaseKey(item, diff);
 		// Then, we use deleteMin.
 		this.deleteMin();
-//		System.out.println("|||||||||||  Size after delete is:" + this.size);
 	}
 
 	/**
@@ -245,21 +239,11 @@ public class BinomialHeap {
 	 */
 	public void meld(BinomialHeap heap2)
 	{
-		/*
-		System.out.println("------------------------ in meld----------------------");
-		System.out.println("This tree is: ");
-		PrintHeap.printHeap(this, true);
-		System.out.println("heap2 tree is: ");
-		PrintHeap.printHeap(heap2, true);
-		System.out.println("Number of trees in heap1 is: \n" + this.numOfTrees);
-		System.out.println("Number of trees in heap2 is: \n" + heap2.numOfTrees);
-*/
-		int thisNumOfTrees = this.numOfTrees;
-		this.numOfTrees += heap2.numOfTrees;
-
 		if (heap2 == null){
 			return;
 		}
+		int heap1StartingNumOfTrees = this.numOfTrees;
+		this.numOfTrees += heap2.numOfTrees;
 		int thisHeapSize = this.size;
 		int heap2HeapSize= heap2.size();
 		if (!heap2.empty()){
@@ -285,32 +269,20 @@ public class BinomialHeap {
 
 				HeapNode heap1First = heap1Prev.getNext();
 				HeapNode heap1Pointer = heap1First;
-
-//				int heap1StartingNumOfTrees = this.numTrees();
-				int heap1StartingNumOfTrees = thisNumOfTrees;
-
 				int counter = 0;
-
 				HeapNode heap2Pointer = heap2Last.getNext();
-
 				while (counter <= heap1StartingNumOfTrees && (heap2Pointer != null)) {
 					// the loop will run as long as we still have trees in both of the heaps that we haven't visited
-
 					HeapNode heap2NextPointer = heap2Pointer.getNext();
 					if (heap2Pointer == heap2NextPointer) {
 						// check if heap2Pointer pointing the last tree in heap 2 we didn't connect yet
-
 						heap2NextPointer = null;
 					}
-
 					if (heap1Pointer.getRank() == heap2Pointer.getRank()) {
 						// check if we can connect the trees
-
 						heap2Last.setNext(heap2NextPointer);
 						HeapNode heap1_futureNext = heap1Pointer.getNext();
-
 						heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap2Pointer); //link the trees
-
 						if (heap1Prev != heap1Pointer.getChild()){
 							// there were more than 1 node in this heap before the linking
 							heap1Prev.setNext(heap1Pointer);
@@ -320,32 +292,23 @@ public class BinomialHeap {
 							heap1Prev = heap1Pointer;
 							heap1Pointer.setNext(heap1Pointer);
 						}
-
 						if (this.getLast().getRank() < heap1Pointer.getRank()){
 							// update the last's pointer in this heap if it changed
 							this.setLast(heap1Pointer);
 						}
-
 						if(heap1First == heap1Pointer.getChild()){
 							heap1First = heap1Pointer;
 						}
-
-//						System.out.println("parent: " + heap1Pointer.getItem().getKey() + "\n child: " + heap1Pointer.getChild().getItem().getKey());
-
-
 						heap2Pointer = heap2NextPointer;
 
 						while (heap1Pointer.getRank() == heap1Pointer.getNext().getRank() && heap1Pointer != heap1Pointer.getNext()){
-
 							// the loop run as long as there are 2 different trees in our heap (this) that have the same rank
-
 							HeapNode heap1_future_next_pointer = heap1Pointer.getNext().getNext();
 							heap1Pointer = compareHeapNodesAndLink(heap1Pointer, heap1Pointer.getNext());
 
 							if (heap1Prev == heap1Pointer.getChild()){
 								// special case 1 - we had only 2 trees in this heap before we linked them and heap1Pointer hasn't changed:
 								// we need to update heap1Prev and the next of heap1Pointer (they pointed to a child)
-
 								heap1Prev = heap1Pointer;
 								heap1Pointer.setNext(heap1Pointer);
 							}
@@ -359,38 +322,30 @@ public class BinomialHeap {
 								heap1Prev.setNext(heap1Pointer);
 								heap1Pointer.setNext(heap1_future_next_pointer);
 							}
-
 							if (this.getLast().getRank() < heap1Pointer.getRank()){
 								// update the last's pointer in this heap if it changed
 								this.setLast(heap1Pointer);
 							}
-
 							if(heap1First == heap1Pointer.getChild()){
 								heap1First = heap1Pointer;
 							}
-
 							counter++;
 						}
 					}
-
 					else if (heap1Pointer.getRank() > heap2Pointer.getRank()) {
 						// we can't link this tree of heap 2, so we need to connect it before this tree of this heap
 						heap1Prev.setNext(heap2Pointer);
 						heap1Prev = heap1Prev.getNext();
 						heap2Pointer.setNext(heap1Pointer);
 						heap2Pointer = heap2NextPointer;
-
 						if(heap1First.getRank() > heap1Prev.getRank()){
 							heap1First = heap1Prev;
 						}
-
-
 						if (heap2Pointer != null){
 							// check if we finished to meld
 							heap2Last.setNext(heap2NextPointer);
 						}
 					}
-
 					else {
 						// we can't link this tree of heap 2 to this tree of this heap, so we need to check with a bigger
 						// rank tree in this heap
@@ -416,11 +371,14 @@ public class BinomialHeap {
 			}
 		}
 		this.setSize(thisHeapSize + heap2HeapSize);
-//		System.out.println("This tree after meld is: ");
-//		PrintHeap.printHeap(this, true);
-//		System.out.println("------------------------ finish meld----------------------");
 	}
 
+	/**
+	 *
+	 * @param heapNode1
+	 * @param heapNode2
+	 * @return
+	 */
 	public HeapNode compareHeapNodesAndLink(HeapNode heapNode1, HeapNode heapNode2 ){
 		if (heapNode1.getItem().getKey() < heapNode2.getItem().getKey()){
 			heapNode1 = link(heapNode2, heapNode1);
@@ -433,10 +391,14 @@ public class BinomialHeap {
 
 	}
 
+	/**
+	 *
+	 * @param biggerHeapNode
+	 * @param smallerHeapNode
+	 * @return
+	 */
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
 		this.countLinks++;
-//		System.out.println("------------------in link-----------------");
-//		System.out.println("About to link biggerHeapNode: " + biggerHeapNode.getItem().getKey() + "\n to smallerHeapNode: " + smallerHeapNode.getItem().getKey());
 		biggerHeapNode.setNext(biggerHeapNode);
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
@@ -447,12 +409,10 @@ public class BinomialHeap {
 		smallerHeapNode.setRank(1 + smallerHeapNode.getRank());
 		if (smallerHeapNode.getItem().getKey() <= getMin().getItem().getKey())
 			setMin(smallerHeapNode);
-//		System.out.println("parent: " + biggerHeapNode.getParent().getItem().getKey() + " child " + smallerHeapNode.getChild().getNext().getItem().getKey());
 		// Linked two trees so number of trees decreased.
 		this.numOfTrees--;
 		return smallerHeapNode;
 	}
-
 
 	/**
 	 *
@@ -479,9 +439,13 @@ public class BinomialHeap {
 		return numOfTrees;
 	}
 
-	public int numTrees2()
+	/**
+	 * This method calculates the number of trees in this heap.
+	 * @return number of trees.
+	 */
+	public int calNumTrees()
 	{
-		HeapNode currTree = this.last;
+        HeapNode currTree = this.last;
 		int lastRank = this.last.getRank();
 		int count = 1;
 		currTree = currTree.getNext();
@@ -492,9 +456,10 @@ public class BinomialHeap {
 		return count;
 	}
 
+	/**
+	 * Finds the new Min node in this heap by traversing the nodes in the roots "list".
+	 */
 	public void findNewMin (){
-//		System.out.println("------------------In findNewMin----------------");
-//		PrintHeap.printHeap(this, true);
 		HeapNode last = this.last;
 		HeapNode pointer = last;
 		HeapNode newMin = last;
@@ -533,18 +498,6 @@ public class BinomialHeap {
 			this.next = this;
 		}
 
-		public HeapNode(HeapItem item, HeapNode next){
-			this.item = item;
-			this.next = next;
-		}
-
-		public HeapNode(HeapItem item, HeapNode child, HeapNode next, HeapNode parent){
-			this.item = item;
-			this.child = child;
-			this.next = next;
-			this.parent = parent;
-		}
-
 		public HeapItem getItem(){ return item; }
 
 		public HeapNode getChild() { return child; }
@@ -581,12 +534,6 @@ public class BinomialHeap {
 		}
 
 		public HeapItem(int key, String info){
-			this.key = key;
-			this.info = info;
-		}
-
-		public HeapItem(HeapNode node, int key, String info){
-			this.node = node;
 			this.key = key;
 			this.info = info;
 		}

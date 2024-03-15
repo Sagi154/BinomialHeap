@@ -310,7 +310,12 @@ public class testing {
     public static void main (String[] args){
 //        testNumOfTrees();
 //        testMeldSpecialCase();
-        runTests();
+//        runTests();
+        BinomialHeap heap = insertRandomOrderRandomKeys(5, 100);;
+        PrintHeap.printHeap(heap, true);
+        BinomialHeap heap2 = new BinomialHeap();
+        heap.meld(heap2);
+        PrintHeap.printHeap(heap, true);
     }
 
 }
