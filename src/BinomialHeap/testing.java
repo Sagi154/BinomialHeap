@@ -307,15 +307,38 @@ public class testing {
 //        heap.meld(heap2);
         System.out.println("Number of trees in heap1 after meld is: \n" + heap.numOfTrees);
     }
+
+
+    public static void testSpecialCases(){
+        BinomialHeap heap = new BinomialHeap();
+        System.out.println("About to empty(): " + heap.empty());
+        System.out.println("About to numTrees(): " + heap.numTrees());
+        System.out.println("About to find min: " + heap.findMin());
+        BinomialHeap heap2 = new BinomialHeap();
+        System.out.println("inserting....");
+        heap.insert(5, "aa");
+        System.out.println("About to empty(): " + heap.empty());
+        System.out.println("About to numTrees(): " + heap.numTrees());
+        System.out.println("About to find min: " + heap.findMin());
+        heap.meld(heap2);
+        System.out.println("About to empty(): " + heap.empty());
+        System.out.println("About to numTrees(): " + heap.numTrees());
+        System.out.println("About to find min: " + heap.findMin());
+        PrintHeap.printHeap(heap, true);
+        heap.deleteMin();
+        System.out.println("About to empty(): " + heap.empty());
+        System.out.println("About to numTrees(): " + heap.numTrees());
+        System.out.println("About to find min: " + heap.findMin());
+        heap.deleteMin();
+        System.out.println("About to empty(): " + heap.empty());
+        System.out.println("About to numTrees(): " + heap.numTrees());
+        System.out.println("About to find min: " + heap.findMin());
+    }
     public static void main (String[] args){
 //        testNumOfTrees();
 //        testMeldSpecialCase();
 //        runTests();
-        BinomialHeap heap = insertRandomOrderRandomKeys(5, 100);;
-        PrintHeap.printHeap(heap, true);
-        BinomialHeap heap2 = new BinomialHeap();
-        heap.meld(heap2);
-        PrintHeap.printHeap(heap, true);
+        testSpecialCases();
     }
 
 }

@@ -148,7 +148,6 @@ public class BinomialHeap {
 	 * Delete the minimal item
 	 */
 	public void deleteMin() {
-		this.sumOfRanks += this.min.getRank();
 		if (this.size <= 1) {
 			this.min = null;
 			this.last = null;
@@ -398,7 +397,6 @@ public class BinomialHeap {
 	 * @return
 	 */
 	public HeapNode link(HeapNode biggerHeapNode, HeapNode smallerHeapNode){
-		this.countLinks++;
 		biggerHeapNode.setNext(biggerHeapNode);
 		if (smallerHeapNode.getChild() != null){
 			biggerHeapNode.setNext(smallerHeapNode.getChild().getNext());
